@@ -1,0 +1,6 @@
+{
+  "editor.folding": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  }
+}
