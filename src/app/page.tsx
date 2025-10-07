@@ -1,8 +1,10 @@
+import Experience from "@/experience/Experience";
+
 const Home = () => {
   return (
-    <div>
-      Hello world !!!
-    </div>
+    <>
+    <Experience />
+    </>
   );
 };
 
