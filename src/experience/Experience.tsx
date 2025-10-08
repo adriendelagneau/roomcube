@@ -5,13 +5,35 @@ import { Canvas } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
+import useInput from "@/store/useInput";
+
 import CameraManager from "./CameraManager";
 import RaycasterHandler from "./RaycasterHandler";
 import Scene from "./Scene";
 
 const Experience = () => {
   const cameraRef = useRef<THREE.OrthographicCamera>(null);
+  const { setPointer } = useInput();
 
+  useEffect(() => {
+    interface PointerMoveEvent extends MouseEvent {
+      clientX: number;
+      clientY: number;
+    }
+
+   
+
+    const handlePointerMove = (event: PointerMoveEvent): void => {
+      setPointer(
+      (event.clientX / window.innerWidth) * 2 - 1,
+      -(event.clientY / window.innerHeight) * 2 + 1
+      );
+    };
+    window.addEventListener("pointermove", handlePointerMove);
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+    };
+  });
   return (
     <>
       <Canvas
@@ -23,7 +45,7 @@ const Experience = () => {
           ref={cameraRef}
           makeDefault
           position={[0, 0, 10]}
-          zoom={160}
+          zoom={112}
         />
         <Scene />
         <RaycasterHandler />
