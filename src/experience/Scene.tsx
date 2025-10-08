@@ -10,6 +10,7 @@ import Room1 from "./models/Room-3-1";
 import Room2 from "./models/Room-3-2";
 import Room3 from "./models/Room-3-3";
 import Room4 from "./models/Room-3-4";
+import { EffectComposer, Outline } from "@react-three/postprocessing";
 
 const Scene: React.FC = () => {
   const groupRef = useRef<THREE.Group>(null!); // <-- typed as THREE.Group
@@ -47,7 +48,17 @@ const Scene: React.FC = () => {
           <Room2 />
           <Room3 />
           <Room4 />
-
+          {/* EffectComposer */}
+          <EffectComposer enableNormalPass={false}>
+            {/* <ToneMapping /> */}
+            <Outline
+              blur
+              edgeStrength={5}
+              visibleEdgeColor={new THREE.Color("white").getHex()}
+              hiddenEdgeColor={new THREE.Color("transparent").getHex()}
+            
+            />
+          </EffectComposer>
           <GridPlanes
             ref={gridPlanesRef}
             position={[-1, -1, -8]}
