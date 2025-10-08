@@ -10,7 +10,7 @@ import useInteractionStore from "@/store/useInteractionStore";
 import { interactiveObjects } from "@/data/interactiveObjects";
 
 
-const useCameraManager = ({ camera }: { camera: React.RefObject<THREE.PerspectiveCamera> }) => {
+const useCameraManager = ({ camera }: {  camera: React.RefObject<THREE.OrthographicCamera | null>;  }) => {
   const { clickedObject, isEntered } = useInteractionStore();
   const { setCameraTarget } = useCamera();
 
@@ -42,35 +42,34 @@ const useCameraManager = ({ camera }: { camera: React.RefObject<THREE.Perspectiv
 
   const { targetPosition, targetQuaternion, zoom } = useCamera();
 
-  useEffect(() => {
-    if (camera.current) {
-      gsap.to(camera.current.position, {
-        duration: 1.5,
-        x: targetPosition.x,
-        y: targetPosition.y,
-        z: targetPosition.z,
-        ease: "power3.inOut",
-      });
+useEffect(() => {
+  const cam = camera.current;
+  if (!cam) return;
 
-      gsap.to(camera.current.quaternion, {
-        duration: 1.5,
-        x: targetQuaternion.x,
-        y: targetQuaternion.y,
-        z: targetQuaternion.z,
-        w: targetQuaternion.w,
-        ease: "power3.inOut",
-      });
+  gsap.to(cam.position, {
+    duration: 1.5,
+    x: targetPosition.x,
+    y: targetPosition.y,
+    z: targetPosition.z,
+    ease: "power3.inOut",
+  });
 
-      gsap.to(camera.current, {
-        duration: 1.5,
-        zoom: zoom,
-        ease: "power3.inOut",
-        onUpdate: () => {
-          camera.current.updateProjectionMatrix();
-        },
-      });
-    }
-  }, [targetPosition, targetQuaternion, zoom, camera]);
+  gsap.to(cam.quaternion, {
+    duration: 1.5,
+    x: targetQuaternion.x,
+    y: targetQuaternion.y,
+    z: targetQuaternion.z,
+    w: targetQuaternion.w,
+    ease: "power3.inOut",
+  });
+
+  gsap.to(cam, {
+    duration: 1.5,
+    zoom: zoom,
+    ease: "power3.inOut",
+    onUpdate: () => cam.updateProjectionMatrix(),
+  });
+}, [targetPosition, targetQuaternion, zoom, camera]);
 };
 
 export default useCameraManager;

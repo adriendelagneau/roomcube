@@ -3,11 +3,14 @@
 import { OrthographicCamera } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
+import * as THREE from "three";
 
+import CameraManager from "./CameraManager";
+import RaycasterHandler from "./RaycasterHandler";
 import Scene from "./Scene";
 
 const Experience = () => {
-  const cameraRef = useRef(null);
+  const cameraRef = useRef<THREE.OrthographicCamera>(null);
 
   return (
     <>
@@ -23,6 +26,8 @@ const Experience = () => {
           zoom={160}
         />
         <Scene />
+        <RaycasterHandler />
+        <CameraManager camera={cameraRef} />
       </Canvas>
     </>
   );

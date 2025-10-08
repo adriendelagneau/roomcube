@@ -1,7 +1,11 @@
-// utils/textSplitter.js
 import React from "react";
 
-export function textSplitter(text) {
+/**
+ * Split a string into words and characters for animation/layout purposes
+ * @param text - The text to split
+ * @returns Array of JSX elements
+ */
+export function textSplitter(text: string): React.ReactElement[] {
   if (!text) return [];
 
   // Split text by spaces, but keep spaces for layout
@@ -17,9 +21,7 @@ export function textSplitter(text) {
           key={`char-${wIndex}-${cIndex}`}
           className="outer-span inline-block overflow-hidden align-top"
         >
-          <span className="inner-span inline-block">
-            {char}
-          </span>
+          <span className="inner-span inline-block">{char}</span>
         </span>
       ))}
       {/* Preserve spacing between words */}
