@@ -1,24 +1,32 @@
-import type { Object3D } from "three";
 import { create } from "zustand";
 
 interface InteractionState {
-  hoveredObject: Object3D | null;
-  clickedObject: Object3D | null;
+  hoveredObject: string | null; // name of hovered object
+  clickedObject: string | null; // name of clicked object
   isEntered: boolean;
+  hasEntered: boolean;
+  hasIntroFinished: boolean;
 
-  setHoveredObject: (object: Object3D | null) => void;
-  setClickedObject: (object: Object3D | null) => void;
+  setHoveredObject: (name: string | null) => void;
+  setClickedObject: (name: string | null) => void;
   setIsEntered: (entered: boolean) => void;
+  setHasEntered: (entered: boolean) => void;
+  setHasIntroFinished: (finished: boolean) => void;
 }
 
 const useInteractionStore = create<InteractionState>((set) => ({
   hoveredObject: null,
   clickedObject: null,
   isEntered: false,
+  hasEntered: false,
+  hasIntroFinished: false,
 
-  setHoveredObject: (object) => set({ hoveredObject: object }),
-  setClickedObject: (object) => set({ clickedObject: object }),
+  setHoveredObject: (name) => set({ hoveredObject: name }),
+  setClickedObject: (name) => set({ clickedObject: name }),
   setIsEntered: (entered) => set({ isEntered: entered }),
+  setHasEntered: (entered) => set({ hasEntered: entered }),
+  setHasIntroFinished: (finished) => set({ hasIntroFinished: finished }),
 }));
 
 export default useInteractionStore;
+
