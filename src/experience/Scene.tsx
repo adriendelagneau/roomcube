@@ -5,6 +5,7 @@ import * as THREE from "three";
 import useInput from "@/store/useInput";
 import useInteractionStore from "@/store/useInteractionStore";
 
+import GridPlanes from "./GridPlanes";
 import Room1 from "./models/Room-3-1";
 import Room2 from "./models/Room-3-2";
 import Room3 from "./models/Room-3-3";
@@ -16,6 +17,7 @@ const Scene: React.FC = () => {
   const rotationY = useRef(0);
   const { pointer } = useInput();
   const { clickedObject } = useInteractionStore();
+    const gridPlanesRef = useRef(null);
 
   // Scene rotation
   useFrame(() => {
@@ -45,6 +47,15 @@ const Scene: React.FC = () => {
           <Room2 />
           <Room3 />
           <Room4 />
+
+          <GridPlanes
+            ref={gridPlanesRef}
+            position={[-1, -1, -8]}
+            rows={20}
+            columns={20}
+            planeWidth={1}
+            planeDepth={1}
+          />
         </group>
       </group>
     </Suspense>

@@ -5,15 +5,18 @@ import gsap from "gsap";
 import React, { useRef } from "react";
 
 import useInteractionStore from "@/store/useInteractionStore";
-import { textSplitter } from "@/utils/textSplitter";
 
-import { interactiveObjects, type InteractiveObject } from "@/data/interactiveObjects";
+import {
+  interactiveObjects,
+  type InteractiveObject,
+} from "@/data/interactiveObjects";
+import { textSplitter } from "@/utils/textSplitter";
 
 gsap.registerPlugin(useGSAP);
 
 const Sidebar: React.FC = () => {
   const { clickedObject } = useInteractionStore();
-  
+
   const activeObject: InteractiveObject | undefined = interactiveObjects.find(
     (obj) => obj.name === clickedObject
   );
@@ -26,7 +29,8 @@ const Sidebar: React.FC = () => {
     () => {
       if (!activeObject || !containerRef.current) return;
 
-      const spans = containerRef.current.querySelectorAll<HTMLElement>(".inner-span");
+      const spans =
+        containerRef.current.querySelectorAll<HTMLElement>(".inner-span");
 
       gsap.fromTo(
         spans,
@@ -55,7 +59,8 @@ const Sidebar: React.FC = () => {
           <div className="mt-10 space-y-10 font-medium">
             <h2 className="text-2xl font-bold">{activeObject.title}</h2>
             <p className="text-xl opacity-90">
-              {textSplitter(activeObject.text)}
+              
+              {textSplitter(activeObject.text ?? "")}
             </p>
           </div>
         </div>
