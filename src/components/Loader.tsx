@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
 import { useProgress } from "@react-three/drei";
 import gsap from "gsap";
+import React, { useEffect, useRef, useState } from "react";
+
 import useInteractionStore from "@/store/useInteractionStore";
 
 export default function Loader() {
@@ -38,9 +39,9 @@ export default function Loader() {
 
     const tl = gsap.timeline({
       onComplete: () => {
-        setIsDone(true),
+        setIsDone(true);
         setIsEntered(true); // 🔹 Mark as entered in the global store
-      } 
+      },
     });
 
     tl.to(topRef.current, {
@@ -66,23 +67,23 @@ export default function Loader() {
   const dashOffset = perimeter - (displayProgress / 100) * perimeter;
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none">
+    <div className="pointer-events-none fixed inset-0 z-50">
       <div
         ref={topRef}
-        className="absolute top-0 left-0 right-0 h-1/2 bg-zinc-950 flex items-end justify-center"
+        className="absolute top-0 right-0 left-0 flex h-1/2 items-end justify-center bg-zinc-950"
       >
         <div
-          className="relative w-[120px] h-[60px]"
+          className="relative h-[60px] w-[120px]"
           style={{ perspective: 1000 }}
         >
           <div
             ref={cardRef}
-            className="relative w-full h-[120px] text-2xl"
+            className="relative h-[120px] w-full text-2xl"
             style={{ transformStyle: "preserve-3d", top: "-60px" }}
           >
             {/* Front Side: Loading Progress */}
             <div
-              className="absolute w-full h-full flex items-center justify-center"
+              className="absolute flex h-full w-full items-center justify-center"
               style={{ backfaceVisibility: "hidden" }}
             >
               <svg
@@ -114,14 +115,12 @@ export default function Loader() {
                   style={{ transition: "stroke-dashoffset 0.3s ease" }}
                 />
               </svg>
-              <span className="text-zinc-100  pointer-events-auto">
-                Loading
-              </span>
+              <span className="pointer-events-auto text-zinc-100">Loading</span>
             </div>
 
             {/* Back Side: Enter Button */}
             <div
-              className="absolute w-full h-full flex items-center justify-center"
+              className="absolute flex h-full w-full items-center justify-center"
               style={{
                 transform: "rotateX(180deg)",
                 backfaceVisibility: "hidden",
@@ -130,9 +129,9 @@ export default function Loader() {
               <button
                 onClick={handleEnter}
                 disabled={!canEnter}
-                className={`px-6 py-3 w-full h-full text-zinc-100  transition duration-300 pointer-events-auto ${
+                className={`pointer-events-auto h-full w-full px-6 py-3 text-zinc-100 transition duration-300 ${
                   canEnter
-                    ? "opacity-100 cursor-pointer border-2 border-zinc-100 hover:bg-zinc-100 hover:text-zinc-950"
+                    ? "cursor-pointer border-2 border-zinc-100 opacity-100 hover:bg-zinc-100 hover:text-zinc-950"
                     : "opacity-0"
                 }`}
               >
@@ -145,7 +144,7 @@ export default function Loader() {
 
       <div
         ref={bottomRef}
-        className="absolute bottom-0 left-0 right-0 h-1/2 bg-zinc-950"
+        className="absolute right-0 bottom-0 left-0 h-1/2 bg-zinc-950"
       />
     </div>
   );
