@@ -18,7 +18,7 @@ const Plane: React.FC<PlaneProps> = ({ position, planeDepth, planeWidth }) => {
   const material = useMemo(() => {
     return new THREE.MeshStandardMaterial({
       color: "#ffffff",
-      emissive: "##000747",
+      emissive: "#000747",
       emissiveIntensity: 0.8,
       transparent: true,
       opacity: 0,
@@ -32,7 +32,7 @@ const Plane: React.FC<PlaneProps> = ({ position, planeDepth, planeWidth }) => {
     if (!meshRef.current || !meshRef.current.material) return;
 
     const material = meshRef.current.material as THREE.MeshStandardMaterial;
-    const targetColor = hovered ? "##000747" : "#ffffff";
+    const targetColor = hovered ? "#000747" : "#ffffff";
     const targetColorObj = new THREE.Color(targetColor);
 
     gsap.to(material.emissive, {

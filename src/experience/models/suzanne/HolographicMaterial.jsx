@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import holographicVertexShader from '../../../shaders/holographic/vertex.glsl'
-import holographicFragmentShader from '../../../shaders/holographic/fragment.glsl'
+import holographicVertexShader from '../../shaders/holographic/vertex.glsl'
+import holographicFragmentShader from '../../shaders/holographic/fragment.glsl'
 
 export const HolographicMaterial = ({ color = '#70c1ff' }) => {
   const materialRef = useRef()

@@ -1,4 +1,5 @@
 "use client";
+
 import { useGLTF } from "@react-three/drei";
 import gsap from "gsap";
 import React, { useMemo, useRef, useState, useEffect } from "react";
@@ -11,7 +12,7 @@ type GLTFResult = {
 const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
   const { nodes } = useGLTF("/models/hit-boxes.glb") as unknown as GLTFResult;
 
-  // 🟦 Invisible hit-box material
+  // 🟦 Transparent hit-box material
   const hitBoxMaterial = useMemo(
     () =>
       new MeshBasicMaterial({
@@ -22,7 +23,7 @@ const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
     []
   );
 
-  // 💠 Glowing corner material
+  // 💠 Glowing corners material
   const cornersMaterial = useMemo(
     () =>
       new MeshStandardMaterial({
@@ -44,13 +45,13 @@ const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
   // Hover state
   const [hovered, setHovered] = useState<string | null>(null);
 
-  // ✨ Animate corner scale on hover
+  // Animate corner scale on hover
   useEffect(() => {
     Object.entries(cornerRefs).forEach(([key, ref]) => {
       gsap.to(ref.current?.scale || {}, {
-        x: hovered  === key  ? 1 : 0,
-        y: hovered  === key  ? 1 : 0,
-        z: hovered  === key  ? 1 : 0,
+        x: hovered === key ? 1 : 0,
+        y: hovered === key ? 1 : 0,
+        z: hovered === key ? 1 : 0,
         duration: 0.5,
         ease: "power2.out",
       });
@@ -68,6 +69,7 @@ const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
         scale={0}
       />
       <mesh
+        name="Mug"
         geometry={nodes["hit-box-mug"].geometry}
         material={hitBoxMaterial}
         position={[-0.275, 1.154, 1.788]}
@@ -90,6 +92,7 @@ const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
         scale={0}
       />
       <mesh
+        name="Clock"
         geometry={nodes["hit-box-clock"].geometry}
         material={hitBoxMaterial}
         position={[-2.168, 2.36, -1.091]}
@@ -112,6 +115,7 @@ const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
         scale={0}
       />
       <mesh
+        name="Photos"
         geometry={nodes["hit-box-photos"].geometry}
         material={hitBoxMaterial}
         position={[-1.101, 2.111, -2.137]}
@@ -130,14 +134,14 @@ const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
         ref={cornerRefs.library}
         geometry={nodes["corners-library"].geometry}
         material={cornersMaterial}
-        position={[2.069, 2.043, -0.33]}
+        position={[2.064, 2.043, -0.325]}
         scale={0}
-        />
+      />
       <mesh
         name="Library"
         geometry={nodes["hit-box-library"].geometry}
         material={hitBoxMaterial}
-        position={[2.259, 2.043, -0.52]}
+        position={[2.264, 2.043, -0.524]}
         onPointerOver={() => {
           setHovered("library");
           document.body.style.cursor = "pointer";

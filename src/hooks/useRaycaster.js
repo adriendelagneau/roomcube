@@ -10,17 +10,17 @@ import useInteractionStore from "@/store/useInteractionStore";
 
 
 const useRaycaster = () => {
-  const { scene, camera, gl } = useThree();
-  const canvas = gl.domElement;
+  const { scene, camera } = useThree();
   const { setHoveredObject, setClickedObject } = useInteractionStore();
+  const { gl } = useThree();
+  const canvas = gl.domElement; // this is the actual <canvas> element
 
+  
   useEffect(() => {
-    const onPointerMove = () => {
+    const onPointerMove = (event) => {
       const pointer = useInput.getState().pointer;
-      const pointerVec2 = new THREE.Vector2(pointer.x, pointer.y);
-
       const raycaster = new THREE.Raycaster();
-      raycaster.setFromCamera(pointerVec2, camera);
+      raycaster.setFromCamera(pointer, camera);
       const intersects = raycaster.intersectObjects(scene.children, true);
 
       if (intersects.length > 0) {
@@ -31,27 +31,28 @@ const useRaycaster = () => {
 
         if (isInteractive) {
           setHoveredObject(intersectedObject.name);
+          // console.log('Hovered:', intersectedObject.name);
         } else {
           setHoveredObject(null);
+          // console.log('Hovered: null');
         }
       } else {
         setHoveredObject(null);
+        // console.log('Hovered: null');
       }
     };
 
-    const onClick = (event: MouseEvent | PointerEvent) => {
-      const pointer = useInput.getState().pointer;
-      const pointerVec2 = new THREE.Vector2(pointer.x, pointer.y);
-
-      const raycaster = new THREE.Raycaster();
-      raycaster.setFromCamera(pointerVec2, camera);
-      const intersects = raycaster.intersectObjects(scene.children, true);
+    const onClick = (event) => {
+      const canvas = gl.domElement;
+      if (!canvas) return;
       
-      // console.log(intersects[0].object, "toto");
+      const pointer = useInput.getState().pointer;
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(pointer, camera);
+      const intersects = raycaster.intersectObjects(scene.children, true);
 
       if (intersects.length > 0) {
         const intersectedObject = intersects[0].object;
-
         const isInteractive = interactiveObjects.some(
           (obj) => obj.name === intersectedObject.name
         );
@@ -76,7 +77,7 @@ const useRaycaster = () => {
       canvas.removeEventListener("pointermove", onPointerMove);
       canvas.removeEventListener("click", onClick);
     };
-  }, [scene, camera, setHoveredObject, setClickedObject, canvas]);
+  }, [scene, camera, setHoveredObject, setClickedObject, canvas, gl.domElement]);
 };
 
 export default useRaycaster;
