@@ -1,30 +1,33 @@
-import { useGLTF } from "@react-three/drei";
-import React from "react";
-import { Mesh, TextureLoader } from "three";
+/*
+Converted from gltfjsx output
+Original command: npx gltfjsx@6.5.3 Room-3-2.glb
+*/
 
-// --- Type definition for GLTF nodes ---
+import { useGLTF } from "@react-three/drei";
+import React, { useMemo } from "react";
+import { TextureLoader, Mesh } from "three";
+
 type GLTFResult = {
-  nodes: {
-    [key: string]: Mesh;
-  };
+  nodes: { [name: string]: Mesh };
 };
 
-// --- Component ---
-const Room3_2: React.FC<React.ComponentProps<"group">> = (props) => {
+const Room3_2_Baked: React.FC<React.ComponentProps<"group">> = (props) => {
   const { nodes } = useGLTF("/models/Room-3-2.glb") as unknown as GLTFResult;
 
-  // --- Baked texture ---
-  const bakedTexture = React.useMemo(() => {
+  // 🧱 Load baked texture
+  const bakedTexture = useMemo(() => {
     const texture = new TextureLoader().load("/textures/Room3-2.jpg");
     texture.flipY = false;
     return texture;
   }, []);
 
+  const bakedMaterial = <meshBasicMaterial map={bakedTexture} />;
+
   return (
     <group {...props} dispose={null}>
+      {/* 🐉 Dragon & nearby meshes */}
       {[
         "Dragon",
-        "Suzanne",
         "KALLRÖR_HANDLE_213MM002",
         "Cylinder001",
         "Cylinder",
@@ -40,6 +43,16 @@ const Room3_2: React.FC<React.ComponentProps<"group">> = (props) => {
         "Cube003",
         "Cube001",
         "KALLRÖR_HANDLE_213MM001",
+      ].map((name) =>
+        nodes[name] ? (
+          <mesh key={name} geometry={nodes[name].geometry}>
+            {bakedMaterial}
+          </mesh>
+        ) : null
+      )}
+
+      {/* ♟️ Chess pieces group */}
+      {[
         "tower2001",
         "tower2",
         "tower001",
@@ -73,24 +86,36 @@ const Room3_2: React.FC<React.ComponentProps<"group">> = (props) => {
         "king2",
         "king",
         "board",
-        "Cube067",
-        "Cube068",
-        "Cube069",
-        "Cube070",
-        "Cube071",
-        "Cube072",
-        "Cube073",
-        "Cube074",
+      ].map((name) =>
+        nodes[name] ? (
+          <mesh key={name} geometry={nodes[name].geometry}>
+            {bakedMaterial}
+          </mesh>
+        ) : null
+      )}
+
+      {/* 💠 Cube stack */}
+      {[
         "Cube075",
-      ].map((name) => (
-        <mesh key={name} geometry={nodes[name]?.geometry}>
-          <meshBasicMaterial map={bakedTexture} />
-        </mesh>
-      ))}
+        "Cube074",
+        "Cube073",
+        "Cube072",
+        "Cube071",
+        "Cube070",
+        "Cube069",
+        "Cube068",
+        "Cube067",
+      ].map((name) =>
+        nodes[name] ? (
+          <mesh key={name} geometry={nodes[name].geometry}>
+            {bakedMaterial}
+          </mesh>
+        ) : null
+      )}
     </group>
   );
 };
 
 useGLTF.preload("/models/Room-3-2.glb");
 
-export default Room3_2;
+export default Room3_2_Baked;

@@ -46,9 +46,11 @@ const useRaycaster = () => {
       const raycaster = new THREE.Raycaster();
       raycaster.setFromCamera(pointerVec2, camera);
       const intersects = raycaster.intersectObjects(scene.children, true);
+      console.log(intersects[0], "toto");
 
       if (intersects.length > 0) {
         const intersectedObject = intersects[0].object;
+
         const isInteractive = interactiveObjects.some(
           (obj) => obj.name === intersectedObject.name
         );
