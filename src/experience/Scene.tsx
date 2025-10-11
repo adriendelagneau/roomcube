@@ -10,9 +10,8 @@ import GridPlanes from "./GridPlanes";
 import HitBoxes from "./models/Hit-boxes";
 import Room1 from "./models/Room-3-1";
 import Room2 from "./models/Room-3-2";
-import Room3 from "./models/Room-3-3";
+// import Room3 from "./models/Room-3-3";
 import Room4 from "./models/Room-3-4";
-import Suzanne from "./models/suzanne/Suzanne";
 
 const Scene: React.FC = () => {
   const groupRef = useRef<THREE.Group>(null!); // <-- typed as THREE.Group
@@ -48,11 +47,9 @@ const Scene: React.FC = () => {
         <group ref={groupRef}>
           <Room1 />
           <Room2 />
-          <Room3 />
+          {/* <Room3 /> */}
           <Room4 />
           <HitBoxes />
-
-          <Suzanne />
 
           {/* EffectComposer */}
           <EffectComposer enableNormalPass={false}>
@@ -61,7 +58,7 @@ const Scene: React.FC = () => {
               blur
               edgeStrength={5}
               visibleEdgeColor={new THREE.Color("white").getHex()}
-              // hiddenEdgeColor={new THREE.Color("transparent").getHex()}
+              hiddenEdgeColor={new THREE.Color("transparent").getHex()}
             />
           </EffectComposer>
           <GridPlanes

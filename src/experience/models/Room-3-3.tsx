@@ -43,7 +43,7 @@ const Room3_3_Baked: React.FC<React.ComponentProps<"group">> = (props) => {
             geometry={nodes["laptop-screen"].geometry}
             position={[0, 0.03, 0]}
           >
-            {videoMaterial}
+            {/* {videoMaterial} */}
           </mesh>
         )}
         {nodes["Plane"] && (
@@ -66,7 +66,7 @@ const Room3_3_Baked: React.FC<React.ComponentProps<"group">> = (props) => {
         )}
         {nodes["pc-screen"] && (
           <mesh geometry={nodes["pc-screen"].geometry} position={[0, -0.02, 0]}>
-            {videoMaterial}
+            {/* {videoMaterial} */}
           </mesh>
         )}
       </group>
