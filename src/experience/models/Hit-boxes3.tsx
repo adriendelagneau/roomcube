@@ -2,7 +2,7 @@
 
 import { useGLTF } from "@react-three/drei";
 import gsap from "gsap";
-import React, { useMemo, useRef, useState, useEffect } from "react";
+import React, { useRef, useMemo, useState, useEffect } from "react";
 import { Mesh, MeshBasicMaterial, MeshStandardMaterial } from "three";
 
 import useInteractionStore from "@/store/useInteractionStore";
@@ -11,9 +11,7 @@ type GLTFResult = {
   nodes: { [name: string]: Mesh };
 };
 
-const HitBoxesClock_Baked: React.FC<React.ComponentProps<"group">> = (
-  props
-) => {
+const HitBoxes_Baked: React.FC<React.ComponentProps<"group">> = (props) => {
   const { nodes } = useGLTF("/models/hit-boxes.glb") as unknown as GLTFResult;
   const { clickedObject } = useInteractionStore();
 
@@ -32,60 +30,117 @@ const HitBoxesClock_Baked: React.FC<React.ComponentProps<"group">> = (
   const cornersMaterial = useMemo(
     () =>
       new MeshStandardMaterial({
-        color: "#00ffff",
-        emissive: "#00ffff",
+        color: "#5394fc",
+        emissive: "#5394fc",
         emissiveIntensity: 1.5,
       }),
     []
   );
 
-  // 🧩 Ref for the clock corners
-  const clockCornerRef = useRef<Mesh>(null);
+  // 🧩 Refs for corner meshes
+  const refs = {
+    Clock: useRef<Mesh>(null),
+    Library: useRef<Mesh>(null),
+    Mug: useRef<Mesh>(null),
+    Photos: useRef<Mesh>(null),
+  };
 
-  // Hover state
-  const [hovered, setHovered] = useState<boolean>(false);
+  // 🧠 Hover states
+  const [hovered, setHovered] = useState<Record<string, boolean>>({
+    Clock: false,
+    Library: false,
+    Mug: false,
+    Photos: false,
+  });
 
-  // Animate clock corner scale on hover
+  // 🎞 Animate corner visibility (hover or click)
   useEffect(() => {
-    gsap.to(clockCornerRef.current?.scale || {}, {
-      x: hovered || clickedObject === "Clock" ? 1 : 0,
-      y: hovered || clickedObject === "Clock" ? 1 : 0,
-      z: hovered || clickedObject === "Clock" ? 1 : 0,
-      duration: 0.5,
-      ease: "power2.out",
+    Object.entries(refs).forEach(([key, ref]) => {
+      gsap.to(ref.current?.scale || {}, {
+        x:
+          hovered[key] || clickedObject === key
+            ? 1
+            : 0,
+        y:
+          hovered[key] || clickedObject === key
+            ? 1
+            : 0,
+        z:
+          hovered[key] || clickedObject === key
+            ? 1
+            : 0,
+        duration: 0.4,
+        ease: "power2.out",
+      });
     });
   }, [hovered, clickedObject]);
 
+  // 🧩 Object configuration
+  const objects = [
+    {
+      name: "Clock",
+      corner: "corners-clock",
+      box: "hit-box-clock",
+      positionCorner: [-2.237, 2.41, -1.034],
+      positionBox: [-2.259, 2.41, -1.056],
+    },
+    {
+      name: "Library",
+      corner: "corners-library",
+      box: "hit-box-library",
+      positionCorner: [2.064, 2.043, -0.325],
+      positionBox: [2.264, 2.043, -0.524],
+    },
+    {
+      name: "Mug",
+      corner: "corners-mug",
+      box: "hit-box-mug",
+      positionCorner: [-0.275, 1.171, 1.788],
+      positionBox: [-0.275, 1.171, 1.788],
+    },
+    {
+      name: "Photos",
+      corner: "corners-photos",
+      box: "hit-box-photos",
+      positionCorner: [-0.917, 2.322, -2.292],
+      positionBox: [0.161, 0.211, -0.178],
+    },
+  ] as const;
+
   return (
     <group {...props} dispose={null}>
-      {/* 💠 Clock Corners (glow) */}
-      <mesh
-        ref={clockCornerRef}
-        geometry={nodes["corners-clock"].geometry}
-        material={cornersMaterial}
-        position={[-2.237, 2.41, -1.034]}
-        scale={0}
-      />
+      {objects.map((obj) => (
+        <group key={obj.name}>
+          {/* 💠 Corners */}
+          <mesh
+            ref={refs[obj.name]}
+            geometry={nodes[obj.corner].geometry}
+            material={cornersMaterial}
+            position={obj.positionCorner as [number, number, number]}
+            scale={0}
+          />
 
-      {/* 🟦 Invisible Hit-box (interactive) */}
-      <mesh
-        name="Clock"
-        geometry={nodes["hit-box-clock"].geometry}
-        material={hitBoxMaterial}
-        position={[-2.259, 2.41, -1.056]}
-        onPointerOver={() => {
-          setHovered(true);
-          document.body.style.cursor = "pointer";
-        }}
-        onPointerOut={() => {
-          setHovered(false);
-          document.body.style.cursor = "auto";
-        }}
-      />
+          {/* 🟦 Hit-box */}
+          <mesh
+            name={obj.name}
+            geometry={nodes[obj.box].geometry}
+            material={hitBoxMaterial}
+            position={obj.positionBox as [number, number, number]}
+            onPointerOver={() => {
+              setHovered((prev) => ({ ...prev, [obj.name]: true }));
+              document.body.style.cursor = "pointer";
+            }}
+            onPointerOut={() => {
+              setHovered((prev) => ({ ...prev, [obj.name]: false }));
+              document.body.style.cursor = "auto";
+            }}
+          />
+        </group>
+      ))}
     </group>
   );
 };
 
 useGLTF.preload("/models/hit-boxes.glb");
 
-export default HitBoxesClock_Baked;
+export default HitBoxes_Baked;

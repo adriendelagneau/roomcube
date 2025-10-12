@@ -8,29 +8,34 @@ import { interactiveObjects } from "@/data/interactiveObjects";
 import useInput from "@/store/useInput";
 import useInteractionStore from "@/store/useInteractionStore";
 
-
 const useRaycaster = () => {
   const { scene, camera, gl } = useThree();
   const canvas = gl.domElement;
   const { setHoveredObject, setClickedObject } = useInteractionStore();
 
   useEffect(() => {
+    const raycaster = new THREE.Raycaster();
+    const pointerVec2 = new THREE.Vector2();
+
     const onPointerMove = () => {
       const pointer = useInput.getState().pointer;
-      const pointerVec2 = new THREE.Vector2(pointer.x, pointer.y);
+      pointerVec2.set(pointer.x, pointer.y);
 
-      const raycaster = new THREE.Raycaster();
       raycaster.setFromCamera(pointerVec2, camera);
       const intersects = raycaster.intersectObjects(scene.children, true);
 
       if (intersects.length > 0) {
         const intersectedObject = intersects[0].object;
-        const isInteractive = interactiveObjects.some(
-          (obj) => obj.name === intersectedObject.name
-        );
+        const objectName = intersectedObject.name;
+
+        // 🧩 Handle photo group hover
+        const isPhoto = objectName.startsWith("photo-");
+        const isInteractive =
+          isPhoto ||
+          interactiveObjects.some((obj) => obj.name === objectName);
 
         if (isInteractive) {
-          setHoveredObject(intersectedObject.name);
+          setHoveredObject(isPhoto ? "Photos" : objectName);
         } else {
           setHoveredObject(null);
         }
@@ -39,26 +44,27 @@ const useRaycaster = () => {
       }
     };
 
-    const onClick = (event: MouseEvent | PointerEvent) => {
+    const onClick = () => {
       const pointer = useInput.getState().pointer;
-      const pointerVec2 = new THREE.Vector2(pointer.x, pointer.y);
+      pointerVec2.set(pointer.x, pointer.y);
 
-      const raycaster = new THREE.Raycaster();
       raycaster.setFromCamera(pointerVec2, camera);
       const intersects = raycaster.intersectObjects(scene.children, true);
-      
-      // console.log(intersects[0].object, "toto");
 
       if (intersects.length > 0) {
         const intersectedObject = intersects[0].object;
+        const objectName = intersectedObject.name;
 
-        const isInteractive = interactiveObjects.some(
-          (obj) => obj.name === intersectedObject.name
-        );
+        // 🧩 Group all photo-x into "Photos"
+        const isPhoto = objectName.startsWith("photo-");
+        const isInteractive =
+          isPhoto ||
+          interactiveObjects.some((obj) => obj.name === objectName);
 
         if (isInteractive) {
-          setClickedObject(intersectedObject.name);
-          console.log("Clicked:", intersectedObject.name);
+          const targetName = isPhoto ? "Photos" : objectName;
+          setClickedObject(targetName);
+          console.log("Clicked:", targetName);
         } else {
           setClickedObject(null);
           console.log("Clicked: null");
@@ -76,7 +82,7 @@ const useRaycaster = () => {
       canvas.removeEventListener("pointermove", onPointerMove);
       canvas.removeEventListener("click", onClick);
     };
-  }, [scene, camera, setHoveredObject, setClickedObject, canvas]);
+  }, [scene, camera, canvas, setHoveredObject, setClickedObject]);
 };
 
 export default useRaycaster;

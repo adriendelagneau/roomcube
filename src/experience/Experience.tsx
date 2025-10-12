@@ -10,6 +10,7 @@ import useInput from "@/store/useInput";
 import CameraManager from "./CameraManager";
 import RaycasterHandler from "./RaycasterHandler";
 import Scene from "./Scene";
+import CameraGUI from "./CameraGUI";
 
 const Experience = () => {
   const cameraRef = useRef<THREE.OrthographicCamera>(null);
@@ -49,6 +50,7 @@ const Experience = () => {
         />
         <Scene />
         <RaycasterHandler />
+          <CameraGUI cameraRef={cameraRef} />
         <CameraManager camera={cameraRef} />
       </Canvas>
     </>

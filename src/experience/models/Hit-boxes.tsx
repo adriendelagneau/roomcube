@@ -30,92 +30,107 @@ const HitBoxes_Baked: React.FC<React.ComponentProps<"group">> = (props) => {
   const cornersMaterial = useMemo(
     () =>
       new MeshStandardMaterial({
-        color: "#00ffff",
-        emissive: "#00ffff",
+        color: "#5394fc",
+        emissive: "#5394fc",
         emissiveIntensity: 1.5,
       }),
     []
   );
 
   // 🧩 Refs for corner meshes
-  const clockCornerRef = useRef<Mesh>(null);
-  const libraryCornerRef = useRef<Mesh>(null);
+  const refs = {
+    Clock: useRef<Mesh>(null),
+    Library: useRef<Mesh>(null),
+    Mug: useRef<Mesh>(null),
+    Photos: useRef<Mesh>(null),
+  };
 
-  // Hover states
-  const [hoveredClock, setHoveredClock] = useState(false);
-  const [hoveredLibrary, setHoveredLibrary] = useState(false);
+  // 🧠 Hover states
+  const [hovered, setHovered] = useState({
+    Clock: false,
+    Library: false,
+    Mug: false,
+    Photos: false,
+  });
 
-  // Animate clock corners
+  // 🎞 Animate corner visibility when hovered or clicked
   useEffect(() => {
-    gsap.to(clockCornerRef.current?.scale || {}, {
-      x: hoveredClock || clickedObject === "Clock" ? 1 : 0,
-      y: hoveredClock || clickedObject === "Clock" ? 1 : 0,
-      z: hoveredClock || clickedObject === "Clock" ? 1 : 0,
-      duration: 0.5,
-      ease: "power2.out",
+    Object.entries(refs).forEach(([key, ref]) => {
+      gsap.to(ref.current?.scale || {}, {
+        x:
+          hovered[key as keyof typeof hovered] || clickedObject === key ? 1 : 0,
+        y:
+          hovered[key as keyof typeof hovered] || clickedObject === key ? 1 : 0,
+        z:
+          hovered[key as keyof typeof hovered] || clickedObject === key ? 1 : 0,
+        duration: 0.4,
+        ease: "power2.out",
+      });
     });
-  }, [hoveredClock, clickedObject]);
+  }, [hovered, clickedObject]);
 
-  // Animate library corners
-  useEffect(() => {
-    gsap.to(libraryCornerRef.current?.scale || {}, {
-      x: hoveredLibrary || clickedObject === "Library" ? 1 : 0,
-      y: hoveredLibrary || clickedObject === "Library" ? 1 : 0,
-      z: hoveredLibrary || clickedObject === "Library" ? 1 : 0,
-      duration: 0.5,
-      ease: "power2.out",
-    });
-  }, [hoveredLibrary, clickedObject]);
+  // 🧩 Object definitions for clean rendering
+  const objects = [
+    {
+      name: "Clock",
+      corner: "corners-clock",
+      box: "hit-box-clock",
+      positionCorner: [-2.237, 2.41, -1.034],
+      positionBox: [-2.259, 2.41, -1.056],
+    },
+    {
+      name: "Library",
+      corner: "corners-library",
+      box: "hit-box-library",
+      positionCorner: [2.064, 2.043, -0.325],
+      positionBox: [2.264, 2.043, -0.524],
+    },
+    {
+      name: "Mug",
+      corner: "corners-mug",
+      box: "hit-box-mug",
+      positionCorner: [-0.275, 1.171, 1.788],
+      positionBox: [-0.275, 1.171, 1.788],
+    },
+    {
+      name: "Photos",
+      corner: "corners-photos",
+      box: "hit-box-photos",
+      positionCorner: [-0.917, 2.322, -2.292],
+      positionBox: [-0.938, 2.322, -2.313],
+    },
+  ];
 
   return (
     <group {...props} dispose={null}>
-      {/* 💠 Clock Corners */}
-      <mesh
-        ref={clockCornerRef}
-        geometry={nodes["corners-clock"].geometry}
-        material={cornersMaterial}
-        position={[-2.237, 2.41, -1.034]}
-        scale={0}
-      />
-      {/* 🟦 Clock Hit-box */}
-      <mesh
-        name="Clock"
-        geometry={nodes["hit-box-clock"].geometry}
-        material={hitBoxMaterial}
-        position={[-2.259, 2.41, -1.056]}
-        onPointerOver={() => {
-          setHoveredClock(true);
-          document.body.style.cursor = "pointer";
-        }}
-        onPointerOut={() => {
-          setHoveredClock(false);
-          document.body.style.cursor = "auto";
-        }}
-      />
+      {objects.map((obj) => (
+        <group key={obj.name}>
+          {/* 💠 Corners */}
+          <mesh
+            ref={refs[obj.name as keyof typeof refs]}
+            geometry={nodes[obj.corner].geometry}
+            material={cornersMaterial}
+            position={obj.positionCorner as [number, number, number]}
+            scale={0}
+          />
 
-      {/* 💠 Library Corners */}
-      <mesh
-        ref={libraryCornerRef}
-        geometry={nodes["corners-library"].geometry}
-        material={cornersMaterial}
-        position={[2.064, 2.043, -0.325]}
-        scale={0}
-      />
-      {/* 🟦 Library Hit-box */}
-      <mesh
-        name="Library"
-        geometry={nodes["hit-box-library"].geometry}
-        material={hitBoxMaterial}
-        position={[2.264, 2.043, -0.524]}
-        onPointerOver={() => {
-          setHoveredLibrary(true);
-          document.body.style.cursor = "pointer";
-        }}
-        onPointerOut={() => {
-          setHoveredLibrary(false);
-          document.body.style.cursor = "auto";
-        }}
-      />
+          {/* 🟦 Hit-box */}
+          <mesh
+            name={obj.name}
+            geometry={nodes[obj.box].geometry}
+            material={hitBoxMaterial}
+            position={obj.positionBox as [number, number, number]}
+            onPointerOver={() => {
+              setHovered((prev) => ({ ...prev, [obj.name]: true }));
+              document.body.style.cursor = "pointer";
+            }}
+            onPointerOut={() => {
+              setHovered((prev) => ({ ...prev, [obj.name]: false }));
+              document.body.style.cursor = "auto";
+            }}
+          />
+        </group>
+      ))}
     </group>
   );
 };

@@ -50,8 +50,8 @@ export const interactiveObjects: InteractiveObject[] = [
   },
   {
     name: "Photos",
-    targetPosition: [-5.24, 1.15, 10],
-    targetQuaternion: [-0.0215, -0.0641, -0.1815],
+    targetPosition: [0, -1.31, 10],
+    targetQuaternion: [0, 0, 0],
     zoom: 400,
     title: "Photos",
     text: "A room full of knowledge and adventure!",

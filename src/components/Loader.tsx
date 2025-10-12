@@ -25,8 +25,12 @@ export default function Loader() {
   useEffect(() => {
     if (progress === 100 && cardRef.current) {
       setCanEnter(true);
+
+      // ✅ Added `transformOrigin` + `force3D` for Firefox consistency
       gsap.to(cardRef.current, {
         rotationX: -180,
+        transformOrigin: "center center",
+        force3D: true,
         duration: 1,
         ease: "power2.inOut",
         delay: 0.5,
@@ -40,7 +44,7 @@ export default function Loader() {
     const tl = gsap.timeline({
       onComplete: () => {
         setIsDone(true);
-        setIsEntered(true); // 🔹 Mark as entered in the global store
+        setIsEntered(true);
       },
     });
 
@@ -72,19 +76,28 @@ export default function Loader() {
         ref={topRef}
         className="absolute top-0 right-0 left-0 flex h-1/2 items-end justify-center bg-zinc-950"
       >
+        {/* 🔧 Fixed perspective/preserve-3d hierarchy */}
         <div
           className="relative h-[60px] w-[120px]"
-          style={{ perspective: 1000 }}
+          style={{ perspective: "1000px" }}
         >
           <div
             ref={cardRef}
-            className="relative h-[120px] w-full text-2xl"
-            style={{ transformStyle: "preserve-3d", top: "-60px" }}
+            className="absolute top-[-60px] h-[120px] w-full text-2xl"
+            style={{
+              transformStyle: "preserve-3d",
+              transformOrigin: "center center",
+            }}
           >
-            {/* Front Side: Loading Progress */}
+            {/* FRONT SIDE */}
             <div
               className="absolute flex h-full w-full items-center justify-center"
-              style={{ backfaceVisibility: "hidden" }}
+              style={{
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                MozBackfaceVisibility: "hidden",
+                transform: "translateZ(0)",
+              }}
             >
               <svg
                 width={size}
@@ -118,12 +131,14 @@ export default function Loader() {
               <span className="pointer-events-auto text-zinc-100">Loading</span>
             </div>
 
-            {/* Back Side: Enter Button */}
+            {/* BACK SIDE */}
             <div
               className="absolute flex h-full w-full items-center justify-center"
               style={{
-                transform: "rotateX(180deg)",
+                transform: "rotateX(180deg) translateZ(0)",
                 backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                MozBackfaceVisibility: "hidden",
               }}
             >
               <button

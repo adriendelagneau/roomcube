@@ -1,99 +1,88 @@
-/*
-Converted from gltfjsx output
-Original command: npx gltfjsx@6.5.3 Room-3-3.glb
-*/
+"use client";
 
-import { useGLTF, useVideoTexture } from "@react-three/drei";
-import React, { useMemo } from "react";
-import { TextureLoader, Mesh } from "three";
+import { useGLTF, useTexture, useVideoTexture } from "@react-three/drei";
+import React from "react";
+import { MeshStandardMaterial } from "three";
 
 type GLTFResult = {
-  nodes: { [name: string]: Mesh };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  nodes: { [name: string]: any };
+  materials: { [name: string]: MeshStandardMaterial };
 };
 
-const Room3_3_Baked: React.FC<React.ComponentProps<"group">> = (props) => {
+const Room_3_3_Baked: React.FC<React.ComponentProps<"group">> = (props) => {
   const { nodes } = useGLTF("/models/Room-3-3.glb") as unknown as GLTFResult;
 
-  // 🧱 Load baked texture
-  const bakedTexture = useMemo(() => {
-    const texture = new TextureLoader().load("/textures/Room3-3.jpg");
-    texture.flipY = false;
-    return texture;
-  }, []);
-
-  const bakedMaterial = <meshBasicMaterial map={bakedTexture} />;
-
-  // 🎬 Use Drei’s useVideoTexture for dynamic screen content
-  const videoTexture = useVideoTexture("/textures/matrix-rain.mp4");
-  videoTexture.flipY = false; // Correct orientation
-  const videoMaterial = (
-    <meshBasicMaterial map={videoTexture} toneMapped={false} />
-  );
+  // 🎬 Video textures
+  const pcVideo = useVideoTexture("/textures/matrix-rain.mp4");
+  pcVideo.flipY = false;
+  const laptopVideo = useVideoTexture("/textures/matrix-rain.mp4");
+laptopVideo.flipY = false;
+  // 🧱 Baked texture
+  const bakedTexture = useTexture("/textures/Room3-3.jpg");
+  // bakedTexture.encoding = sRGBEncoding;
+  bakedTexture.flipY = false;
 
   return (
     <group {...props} dispose={null}>
-      {/* 💻 Laptop */}
+      {/* 🖱 Mouse */}
       <group
-        position={[0.175, 1.077, 1.377]}
-        rotation={[0, 1.128, 0]}
-        scale={[1.388, 1.249, 1.388]}
-      >
-        {nodes["laptop-screen"] && (
-          <mesh
-            geometry={nodes["laptop-screen"].geometry}
-            position={[0, 0.03, 0]}
-          >
-            {/* {videoMaterial} */}
-          </mesh>
-        )}
-        {nodes["Plane"] && (
-          <mesh geometry={nodes["Plane"].geometry} position={[0, 0.03, 0]}>
-            {bakedMaterial}
-          </mesh>
-        )}
-      </group>
-
-      {/* 🖥️ PC Monitor */}
-      <group
-        position={[0.554, 1.136, 0.778]}
-        rotation={[0, 0.528, 0]}
-        scale={1.261}
-      >
-        {nodes["Monitor"] && (
-          <mesh geometry={nodes["Monitor"].geometry} position={[0, -0.02, 0]}>
-            {bakedMaterial}
-          </mesh>
-        )}
-        {nodes["pc-screen"] && (
-          <mesh geometry={nodes["pc-screen"].geometry} position={[0, -0.02, 0]}>
-            {/* {videoMaterial} */}
-          </mesh>
-        )}
-      </group>
-
-      {/* 🖱️ Mouse */}
-      <group
-        position={[0.996, 1.079, 0.746]}
-        rotation={[0, 0.828, 0]}
+        position={[1.004, 1.094, 0.724]}
+        rotation={[0, 0.812, 0]}
         scale={1.028}
       >
-        {["Mouse_final", "wheel"].map((name) =>
-          nodes[name] ? (
-            <mesh
-              key={name}
-              geometry={nodes[name].geometry}
-              position={[0, name === "wheel" ? 0.039 : 0.036, 0]}
-            >
-              {bakedMaterial}
-            </mesh>
-          ) : null
-        )}
+        <mesh geometry={nodes.Mouse_final.geometry}>
+          <meshBasicMaterial map={bakedTexture} />
+        </mesh>
+        <mesh geometry={nodes.wheel.geometry}>
+          <meshBasicMaterial map={bakedTexture} />
+        </mesh>
+      </group>
+
+      {/* 💻 Laptop */}
+      <group
+        position={[0.173, 1.091, 1.342]}
+        rotation={[0, 1.113, 0]}
+        scale={[1.388, 1.249, 1.388]}
+      >
+        {/* Laptop Screen (Video) */}
+        <mesh geometry={nodes["laptop-screen"].geometry}>
+          <meshBasicMaterial map={laptopVideo} toneMapped={false} />
+        </mesh>
+
+        {/* Laptop Frame (Baked) */}
+        <mesh geometry={nodes.Plane.geometry}>
+          <meshBasicMaterial map={bakedTexture} />
+        </mesh>
+      </group>
+
+      {/* 🖥 PC Case */}
+      <group
+        position={[0.8, 0.22, 0.559]}
+        rotation={[0, -0.943, 0]}
+        scale={1.167}
+      >
+        {[
+          "case",
+          "case001",
+          "caseinside",
+          "fan",
+          "fan001",
+          "fan002",
+          "fan003",
+          "fan004",
+          "Plane004",
+        ].map((key) => (
+          <mesh key={key} geometry={nodes[key].geometry}>
+            <meshBasicMaterial map={bakedTexture} />
+          </mesh>
+        ))}
       </group>
 
       {/* 🪑 Chair */}
       <group
-        position={[0.907, 0.237, 1.463]}
-        rotation={[Math.PI, -1.164, Math.PI]}
+        position={[0.904, 0.223, 1.44]}
+        rotation={[Math.PI, -1.149, Math.PI]}
         scale={1.167}
       >
         {[
@@ -110,76 +99,74 @@ const Room3_3_Baked: React.FC<React.ComponentProps<"group">> = (props) => {
           "Legs&_Wheels#004",
           "Supprt_-_V",
           "T_Joint",
-        ].map((name) =>
-          nodes[name] ? (
-            <mesh key={name} geometry={nodes[name].geometry}>
-              {bakedMaterial}
-            </mesh>
-          ) : null
-        )}
-      </group>
-
-      {/* 🧰 PC Case */}
-      <group
-        position={[0.791, 0.238, 0.584]}
-        rotation={[0, -0.928, 0]}
-        scale={1.167}
-      >
-        {[
-          "case",
-          "case001",
-          "caseinside",
-          "fan",
-          "fan001",
-          "fan002",
-          "fan003",
-          "fan004",
-          "Plane004",
-        ].map((name) =>
-          nodes[name] ? (
-            <mesh key={name} geometry={nodes[name].geometry}>
-              {bakedMaterial}
-            </mesh>
-          ) : null
-        )}
-      </group>
-
-      {/* 🪞 Desk, Lamp, Rug, Keyboard */}
-      {[
-        "Modern_Desk",
-        "Desk_Lamp",
-        "Black_circle_round_carpet",
-        "Circle_Rug",
-        "Blender_keyboard",
-      ].map((name) =>
-        nodes[name] ? (
-          <mesh
-            key={name}
-            geometry={nodes[name].geometry}
-            position={
-              name === "Desk_Lamp"
-                ? [0.518, -0.059, 0.184]
-                : name === "Black_circle_round_carpet"
-                  ? [0.039, 0, -0.298]
-                  : [0, 0.036, 0]
-            }
-            rotation={name === "Desk_Lamp" ? [0, -0.316, 0] : undefined}
-            scale={
-              name === "Desk_Lamp"
-                ? 1.093
-                : name === "Black_circle_round_carpet"
-                  ? 1.089
-                  : undefined
-            }
-          >
-            {bakedMaterial}
+        ].map((key) => (
+          <mesh key={key} geometry={nodes[key].geometry}>
+            <meshBasicMaterial map={bakedTexture} />
           </mesh>
-        ) : null
-      )}
+        ))}
+      </group>
+
+      {/* 🖥 PC Monitor */}
+      <group
+        position={[0.561, 1.151, 0.749]}
+        rotation={[0, 0.513, 0]}
+        scale={1.261}
+      >
+        {/* Monitor Frame (Baked) */}
+        <mesh geometry={nodes.Monitor.geometry}>
+          <meshBasicMaterial map={bakedTexture} />
+        </mesh>
+
+        {/* Monitor Screen (Video) */}
+        <mesh geometry={nodes["pc-screen"].geometry}>
+          <meshBasicMaterial map={pcVideo} toneMapped={false} />
+        </mesh>
+      </group>
+
+      {/* 🪵 Desk & Props */}
+      <mesh
+        geometry={nodes.Modern_Desk.geometry}
+        position={[0.444, 0.015, -0.058]}
+        rotation={[0, -0.797, 0]}
+      >
+        <meshBasicMaterial map={bakedTexture} />
+      </mesh>
+
+      <mesh
+        geometry={nodes.Desk_Lamp.geometry}
+        position={[0.444, 0.015, -0.058]}
+        rotation={[0, -0.797, 0]}
+      >
+        <meshBasicMaterial map={bakedTexture} />
+      </mesh>
+
+      <mesh
+        geometry={nodes.Circle_Rug.geometry}
+        position={[0.444, 0.015, -0.058]}
+        rotation={[0, -0.797, 0]}
+      >
+        <meshBasicMaterial map={bakedTexture} />
+      </mesh>
+
+      <mesh
+        geometry={nodes.Blender_keyboard.geometry}
+        position={[0.444, 0.015, -0.058]}
+        rotation={[0, -0.797, 0]}
+      >
+        <meshBasicMaterial map={bakedTexture} />
+      </mesh>
+
+      <mesh
+        geometry={nodes.Black_circle_round_carpet.geometry}
+        position={[0.444, 0, -0.058]}
+        rotation={[0, -0.797, 0]}
+      >
+        <meshBasicMaterial map={bakedTexture} />
+      </mesh>
     </group>
   );
 };
 
 useGLTF.preload("/models/Room-3-3.glb");
 
-export default Room3_3_Baked;
+export default Room_3_3_Baked;

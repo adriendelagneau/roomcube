@@ -14,6 +14,7 @@
     "@react-three/fiber": "^9.3.0",
     "@react-three/postprocessing": "^3.0.4",
     "gsap": "^3.13.0",
+    "lil-gui": "^0.20.0",
     "lucide-react": "^0.545.0",
     "next": "15.5.4",
     "prettier": "^3.6.2",
