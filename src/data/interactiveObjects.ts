@@ -16,13 +16,13 @@ export const interactiveObjects: InteractiveObject[] = [
     name: "IntroView",
     targetPosition: [0, 2.38, 10],
     targetQuaternion: [-0.251, 0, 0],
-    zoom: 74,
+    zoom: 54,
   },
   {
     name: "InitialView",
     targetPosition: [0, 0, 10],
     targetQuaternion: [0, 0, 0],
-    zoom: 112,
+    zoom: 72,
   },
   {
     name: "Clock",

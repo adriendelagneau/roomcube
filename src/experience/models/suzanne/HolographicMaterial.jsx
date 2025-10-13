@@ -3,6 +3,12 @@ import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import holographicVertexShader from '../../shaders/holographic/vertex.glsl'
 import holographicFragmentShader from '../../shaders/holographic/fragment.glsl'
+import random2DGlsl from '../../shaders/includes/random2D.glsl'
+
+const finalVertexShader = holographicVertexShader.replace(
+  '// #include random2D',
+  random2DGlsl
+)
 
 export const HolographicMaterial = ({ color = '#70c1ff' }) => {
   const materialRef = useRef()
@@ -16,7 +22,7 @@ export const HolographicMaterial = ({ color = '#70c1ff' }) => {
   return (
     <shaderMaterial
       ref={materialRef}
-      vertexShader={holographicVertexShader}
+      vertexShader={finalVertexShader}
       fragmentShader={holographicFragmentShader}
       uniforms={{
         uTime: { value: 0 },

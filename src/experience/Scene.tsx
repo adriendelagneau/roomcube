@@ -12,6 +12,8 @@ import Room1 from "./models/Room-3-1";
 import Room2 from "./models/Room-3-2";
 import Room3 from "./models/Room-3-3";
 import Room4 from "./models/Room-3-4";
+// import Smoke from "./Smoke";
+// import SuzanneBaked from "./models/suzanne/Suzanne";
 
 const Scene: React.FC = () => {
   const groupRef = useRef<THREE.Group>(null!); // <-- typed as THREE.Group
@@ -41,7 +43,7 @@ const Scene: React.FC = () => {
     <Suspense fallback={null}>
       <group
         rotation={[Math.PI / 14, 0, 0]}
-        position={[0, -2.8, 0]}
+        position={[0, -3.3, 0]}
         scale={1.7}
       >
         <group ref={groupRef}>
@@ -49,8 +51,9 @@ const Scene: React.FC = () => {
           <Room2 />
           <Room3 />
           <Room4 />
-          <HitBoxes />
-
+          {/* <HitBoxes /> */}
+          {/* <SuzanneBaked /> */}
+    {/* <Smoke /> */}
           {/* EffectComposer */}
           <EffectComposer enableNormalPass={false}>
             {/* <ToneMapping /> */}

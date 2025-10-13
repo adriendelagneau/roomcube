@@ -24,7 +24,11 @@ const Room3_1_Baked: React.FC<React.ComponentProps<"group">> = (props) => {
   return (
     <group {...props} dispose={null}>
       {/* 🛋 Sofa group */}
-      <group position={[-1.518, 0.173, -1.241]} rotation={[0, 0.788, 0]} scale={1.051}>
+      <group
+        position={[-2.289, -0.261, -1.731]}
+        rotation={[0, 0.796, 0]}
+        scale={1.578}
+      >
         {["Backmulti", "Cushions", "Legs"].map(
           (name) =>
             nodes[name] && (
@@ -36,7 +40,11 @@ const Room3_1_Baked: React.FC<React.ComponentProps<"group">> = (props) => {
       </group>
 
       {/* 💡 Floor lamp group */}
-      <group position={[-2.785, 0.214, -0.205]} rotation={[0, 0.812, 0]} scale={1.178}>
+      <group
+        position={[-4.178, -0.199, -0.16]}
+        rotation={[0, 0.821, 0]}
+        scale={1.769}
+      >
         {[
           "FloorLamp_Bulb",
           "FloorLamp_Cover",
@@ -55,7 +63,11 @@ const Room3_1_Baked: React.FC<React.ComponentProps<"group">> = (props) => {
 
       {/* 🧱 Wall */}
       {nodes.wall && (
-        <mesh geometry={nodes.wall.geometry} position={[0.444, 0, -0.058]} rotation={[0, -0.797, 0]}>
+        <mesh
+          geometry={nodes.wall.geometry}
+          position={[0.672, -0.52, 0.02]}
+          rotation={[0, -0.788, 0]}
+        >
           <meshBasicMaterial map={bakedTexture} />
         </mesh>
       )}
@@ -64,8 +76,8 @@ const Room3_1_Baked: React.FC<React.ComponentProps<"group">> = (props) => {
       {nodes.House_Plant_Dracaena_Lemon_Lime && (
         <mesh
           geometry={nodes.House_Plant_Dracaena_Lemon_Lime.geometry}
-          position={[0.444, 0, -0.058]}
-          rotation={[0, -0.797, 0]}
+          position={[0.672, -0.52, 0.02]}
+          rotation={[0, -0.788, 0]}
         >
           <meshBasicMaterial map={bakedTexture} />
         </mesh>
@@ -73,14 +85,22 @@ const Room3_1_Baked: React.FC<React.ComponentProps<"group">> = (props) => {
 
       {/* 🪵 Floor */}
       {nodes.Floor && (
-        <mesh geometry={nodes.Floor.geometry} position={[0.444, 0, -0.058]} rotation={[0, -0.797, 0]}>
+        <mesh
+          geometry={nodes.Floor.geometry}
+          position={[0.672, -0.52, 0.02]}
+          rotation={[0, -0.788, 0]}
+        >
           <meshBasicMaterial map={bakedTexture} />
         </mesh>
       )}
 
       {/* 🔌 Wall socket */}
       {nodes.EU_wall_socket001 && (
-        <mesh geometry={nodes.EU_wall_socket001.geometry} position={[-2.946, 0.425, -0.425]}>
+        <mesh
+          geometry={nodes.EU_wall_socket001.geometry}
+          position={[-4.423, 0.118, -0.489]}
+          rotation={[0, 0.008, 0]}
+        >
           <meshBasicMaterial map={bakedTexture} />
         </mesh>
       )}
@@ -89,9 +109,8 @@ const Room3_1_Baked: React.FC<React.ComponentProps<"group">> = (props) => {
       {nodes.win_singleRectangleClosed && (
         <mesh
           geometry={nodes.win_singleRectangleClosed.geometry}
-          position={[0.832, 1.683, -2.61]}
-          rotation={[0, -0.797, 0]}
-          scale={0.666}
+          position={[1.222, 2.007, -3.816]}
+          rotation={[0, -0.789, 0]}
         >
           <meshBasicMaterial map={bakedTexture} />
         </mesh>

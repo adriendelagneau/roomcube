@@ -7,10 +7,10 @@ import * as THREE from "three";
 
 import useInput from "@/store/useInput";
 
+import CameraGUI from "./CameraGUI";
 import CameraManager from "./CameraManager";
 import RaycasterHandler from "./RaycasterHandler";
 import Scene from "./Scene";
-import CameraGUI from "./CameraGUI";
 
 const Experience = () => {
   const cameraRef = useRef<THREE.OrthographicCamera>(null);
@@ -22,12 +22,10 @@ const Experience = () => {
       clientY: number;
     }
 
-   
-
     const handlePointerMove = (event: PointerMoveEvent): void => {
       setPointer(
-      (event.clientX / window.innerWidth) * 2 - 1,
-      -(event.clientY / window.innerHeight) * 2 + 1
+        (event.clientX / window.innerWidth) * 2 - 1,
+        -(event.clientY / window.innerHeight) * 2 + 1
       );
     };
     window.addEventListener("pointermove", handlePointerMove);
@@ -50,7 +48,7 @@ const Experience = () => {
         />
         <Scene />
         <RaycasterHandler />
-          <CameraGUI cameraRef={cameraRef} />
+        {/* <CameraGUI cameraRef={cameraRef} /> */}
         <CameraManager camera={cameraRef} />
       </Canvas>
     </>
