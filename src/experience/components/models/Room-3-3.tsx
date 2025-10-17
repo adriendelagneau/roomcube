@@ -55,6 +55,7 @@ const Room_3_3_Baked: React.FC<React.ComponentProps<"group">> = (props) => {
         {/* Laptop Screen */}
         <mesh geometry={nodes["laptop-screen"].geometry}>
           <meshBasicMaterial
+            color={"#777777"}
             map={laptopVideo}
             toneMapped={false}
             transparent={false}
@@ -134,6 +135,7 @@ const Room_3_3_Baked: React.FC<React.ComponentProps<"group">> = (props) => {
             map={pcVideo}
             toneMapped={false}
             transparent={false}
+            color={"#777777"}
           />
         </mesh>
       </group>

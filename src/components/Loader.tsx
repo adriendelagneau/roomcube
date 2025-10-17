@@ -65,9 +65,10 @@ export default function Loader() {
 
   if (isDone) return null;
 
-  const size = 120;
+  const width = 120;
+  const height = 100;
   const strokeWidth = 2;
-  const perimeter = (size - strokeWidth) * 4;
+  const perimeter = (width - strokeWidth) * 2 + (height - strokeWidth) * 2;
   const dashOffset = perimeter - (displayProgress / 100) * perimeter;
 
   return (
@@ -78,12 +79,12 @@ export default function Loader() {
       >
         {/* 🔧 Fixed perspective/preserve-3d hierarchy */}
         <div
-          className="relative h-[60px] w-[120px]"
+          className="relative h-[100px] w-[120px]"
           style={{ perspective: "1000px" }}
         >
           <div
             ref={cardRef}
-            className="absolute top-[-60px] h-[120px] w-full text-2xl"
+            className="absolute top-[-30px] h-[100px] w-full text-2xl"
             style={{
               transformStyle: "preserve-3d",
               transformOrigin: "center center",
@@ -100,16 +101,18 @@ export default function Loader() {
               }}
             >
               <svg
-                width={size}
-                height={size}
-                viewBox={`0 0 ${size} ${size}`}
+                width={width}
+                height={height}
+                viewBox={`0 0 ${width} ${height}`}
                 className="absolute"
               >
                 <rect
                   x={strokeWidth / 2}
                   y={strokeWidth / 2}
-                  width={size - strokeWidth}
-                  height={size - strokeWidth}
+                  width={width - strokeWidth}
+                  height={height - strokeWidth}
+                  rx="6"
+                  ry="6"
                   stroke="#333"
                   strokeWidth={strokeWidth}
                   fill="none"
@@ -117,8 +120,10 @@ export default function Loader() {
                 <rect
                   x={strokeWidth / 2}
                   y={strokeWidth / 2}
-                  width={size - strokeWidth}
-                  height={size - strokeWidth}
+                  width={width - strokeWidth}
+                  height={height - strokeWidth}
+                  rx="6"
+                  ry="6"
                   stroke="#fff"
                   strokeWidth={strokeWidth}
                   fill="none"
@@ -144,7 +149,7 @@ export default function Loader() {
               <button
                 onClick={handleEnter}
                 disabled={!canEnter}
-                className={`pointer-events-auto h-full w-full px-6 py-3 text-zinc-100 transition duration-300 ${
+                className={`pointer-events-auto h-full w-full rounded-md px-6 py-3 text-zinc-100 transition duration-300 ${
                   canEnter
                     ? "cursor-pointer border-2 border-zinc-100 opacity-100 hover:bg-zinc-100 hover:text-zinc-950"
                     : "opacity-0"

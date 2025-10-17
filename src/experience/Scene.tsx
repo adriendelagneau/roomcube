@@ -50,11 +50,11 @@ const Scene: React.FC = () => {
           {/* GridPlanes */}
           <GridPlanes
             ref={gridPlanesRef}
-            position={[-1, -1, -8]}
+            position={[-1, -1, -15]}
             rows={20}
             columns={20}
-            planeWidth={1}
-            planeDepth={1}
+            planeWidth={2.5}
+            planeDepth={2.5}
           />
 
           {/* Room */}
