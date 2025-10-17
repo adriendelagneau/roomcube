@@ -27,11 +27,11 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/experience/models/Room-3-41.tsx",
-    "src/experience/models/Room-3-41.tsx",
-    "src/experience/models/Room-3-42.tsx",
-    "src/experience/models/Room-3-42.tsx",
-    "src/experience/models/Hit-boxes3.tsx"
+    "src/experience/components/models/Room-3-41.tsx",
+    "src/experience/components/models/Room-3-41.tsx",
+    "src/experience/components/models/Room-3-42.tsx",
+    "src/experience/components/models/Room-3-42.tsx",
+    "src/experience/components/models/Hit-boxes3.tsx"
   ],
   "exclude": ["node_modules"]
 }

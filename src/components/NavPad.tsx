@@ -6,7 +6,7 @@ import React from "react";
 import useInteractionStore from "@/store/useInteractionStore";
 
 const NavPad = () => {
-  const { clickedObject, setClickedObject, isEntered } = useInteractionStore();
+  const { setClickedObject, isEntered } = useInteractionStore();
 
   return (
     <div

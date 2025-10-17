@@ -6,14 +6,14 @@ import * as THREE from "three";
 import useInput from "@/store/useInput";
 import useInteractionStore from "@/store/useInteractionStore";
 
-import GridPlanes from "./GridPlanes";
-import HitBoxes from "./models/Hit-boxes";
-import Room1 from "./models/Room-3-1";
-import Room2 from "./models/Room-3-2";
-import Room3 from "./models/Room-3-3";
-import Room4 from "./models/Room-3-4";
-// import Smoke from "./Smoke";
-// import SuzanneBaked from "./models/suzanne/Suzanne";
+import GridPlanes from "./components/GridPlanes";
+import HitBoxes_Baked from "./components/models/Hit-boxes";
+import Room1 from "./components/models/Room-3-1";
+import Room2 from "./components/models/Room-3-2";
+import Room_3_3_Baked from "./components/models/Room-3-3";
+import Room4 from "./components/models/Room-3-4";
+import MorphParticles from "./components/morphing/Particles";
+import Smoke from "./components/smoke/Smoke";
 
 const Scene: React.FC = () => {
   const groupRef = useRef<THREE.Group>(null!); // <-- typed as THREE.Group
@@ -43,17 +43,33 @@ const Scene: React.FC = () => {
     <Suspense fallback={null}>
       <group
         rotation={[Math.PI / 14, 0, 0]}
-        position={[0, -3.3, 0]}
+        position={[0, -4.6, 0]}
         scale={1.7}
       >
         <group ref={groupRef}>
+          {/* GridPlanes */}
+          <GridPlanes
+            ref={gridPlanesRef}
+            position={[-1, -1, -8]}
+            rows={20}
+            columns={20}
+            planeWidth={1}
+            planeDepth={1}
+          />
+
+          {/* Room */}
           <Room1 />
           <Room2 />
-          <Room3 />
+          <Room_3_3_Baked />
           <Room4 />
-          {/* <HitBoxes /> */}
-          {/* <SuzanneBaked /> */}
-    {/* <Smoke /> */}
+          <HitBoxes_Baked />
+
+          {/* Coffe Smoke */}
+          <Smoke />
+
+          {/* Particles */}
+          <MorphParticles />
+
           {/* EffectComposer */}
           <EffectComposer enableNormalPass={false}>
             {/* <ToneMapping /> */}
@@ -64,14 +80,6 @@ const Scene: React.FC = () => {
               // hiddenEdgeColor={new THREE.Color("transparent").getHex()}
             />
           </EffectComposer>
-          <GridPlanes
-            ref={gridPlanesRef}
-            position={[-1, -1, -8]}
-            rows={20}
-            columns={20}
-            planeWidth={1}
-            planeDepth={1}
-          />
         </group>
       </group>
     </Suspense>

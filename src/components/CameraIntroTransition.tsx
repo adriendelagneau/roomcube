@@ -5,9 +5,8 @@ import gsap from "gsap";
 import { useEffect } from "react";
 import * as THREE from "three";
 
-import useInteractionStore from "@/store/useInteractionStore";
-
 import { interactiveObjects } from "@/data/interactiveObjects";
+import useInteractionStore from "@/store/useInteractionStore";
 
 export default function CameraIntroTransition() {
   const camera = useThree((state) => state.camera);

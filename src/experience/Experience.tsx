@@ -7,9 +7,9 @@ import * as THREE from "three";
 
 import useInput from "@/store/useInput";
 
-import CameraGUI from "./CameraGUI";
-import CameraManager from "./CameraManager";
-import RaycasterHandler from "./RaycasterHandler";
+// import CameraGUI from "./components/CameraGUI";
+import CameraManager from "./components/CameraManager";
+import RaycasterHandler from "./components/RaycasterHandler";
 import Scene from "./Scene";
 
 const Experience = () => {
@@ -43,8 +43,8 @@ const Experience = () => {
         <OrthographicCamera
           ref={cameraRef}
           makeDefault
-          position={[0, 0, 10]}
-          zoom={112}
+          // position={[0, 0, 10]}
+          // zoom={112}
         />
         <Scene />
         <RaycasterHandler />

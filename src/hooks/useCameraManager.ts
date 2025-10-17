@@ -4,13 +4,13 @@ import gsap from "gsap";
 import { useEffect } from "react";
 import * as THREE from "three";
 
+import { interactiveObjects } from "@/data/interactiveObjects";
 import useCamera from "@/store/useCamera";
 import useInteractionStore from "@/store/useInteractionStore";
 
-import { interactiveObjects } from "@/data/interactiveObjects";
 
 
-const useCameraManager = ({ camera }: {  camera: React.RefObject<THREE.OrthographicCamera | null>;  }) => {
+const useCameraManager = ({ camera }: { camera: React.RefObject<THREE.OrthographicCamera | null>; }) => {
   const { clickedObject, isEntered } = useInteractionStore();
   const { setCameraTarget } = useCamera();
 
@@ -42,34 +42,34 @@ const useCameraManager = ({ camera }: {  camera: React.RefObject<THREE.Orthograp
 
   const { targetPosition, targetQuaternion, zoom } = useCamera();
 
-useEffect(() => {
-  const cam = camera.current;
-  if (!cam) return;
+  useEffect(() => {
+    const cam = camera.current;
+    if (!cam) return;
 
-  gsap.to(cam.position, {
-    duration: 1.5,
-    x: targetPosition.x,
-    y: targetPosition.y,
-    z: targetPosition.z,
-    ease: "power3.inOut",
-  });
+    gsap.to(cam.position, {
+      duration: 1.5,
+      x: targetPosition.x,
+      y: targetPosition.y,
+      z: targetPosition.z,
+      ease: "power3.inOut",
+    });
 
-  gsap.to(cam.quaternion, {
-    duration: 1.5,
-    x: targetQuaternion.x,
-    y: targetQuaternion.y,
-    z: targetQuaternion.z,
-    w: targetQuaternion.w,
-    ease: "power3.inOut",
-  });
+    gsap.to(cam.quaternion, {
+      duration: 1.5,
+      x: targetQuaternion.x,
+      y: targetQuaternion.y,
+      z: targetQuaternion.z,
+      w: targetQuaternion.w,
+      ease: "power3.inOut",
+    });
 
-  gsap.to(cam, {
-    duration: 1.5,
-    zoom: zoom,
-    ease: "power3.inOut",
-    onUpdate: () => cam.updateProjectionMatrix(),
-  });
-}, [targetPosition, targetQuaternion, zoom, camera]);
+    gsap.to(cam, {
+      duration: 1.5,
+      zoom: zoom,
+      ease: "power3.inOut",
+      onUpdate: () => cam.updateProjectionMatrix(),
+    });
+  }, [targetPosition, targetQuaternion, zoom, camera]);
 };
 
 export default useCameraManager;

@@ -4,12 +4,11 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import React, { useRef } from "react";
 
-import useInteractionStore from "@/store/useInteractionStore";
-
 import {
   interactiveObjects,
   type InteractiveObject,
 } from "@/data/interactiveObjects";
+import useInteractionStore from "@/store/useInteractionStore";
 import { textSplitter } from "@/utils/textSplitter";
 
 gsap.registerPlugin(useGSAP);
@@ -59,7 +58,6 @@ const Sidebar: React.FC = () => {
           <div className="mt-10 space-y-10 font-medium">
             <h2 className="text-2xl font-bold">{activeObject.title}</h2>
             <p className="text-xl opacity-90">
-              
               {textSplitter(activeObject.text ?? "")}
             </p>
           </div>
