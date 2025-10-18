@@ -2,7 +2,7 @@
 
 import { OrthographicCamera } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
 import useInput from "@/store/useInput";
@@ -19,6 +19,17 @@ const Experience = () => {
   const { setPointer } = useInput();
   const { isMobile, isTablet, isDesktop, updateDimensions } =
     useResponsiveStore();
+    const [isPortrait, setIsPortrait] = useState<boolean>(false);
+
+  const checkOrientation = () => {
+    setIsPortrait(window.innerHeight > window.innerWidth);
+  };
+
+  useEffect(() => {
+    checkOrientation();
+    window.addEventListener("resize", checkOrientation);
+    return () => window.removeEventListener("resize", checkOrientation);
+  }, []);
 
   useEffect(() => {
     updateDimensions(); // Initialize on mount
@@ -46,6 +57,7 @@ const Experience = () => {
   });
   return (
     <>
+      
       <Canvas
         flat
         gl={{ antialias: false }}

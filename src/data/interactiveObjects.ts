@@ -18,15 +18,15 @@ export interface InteractiveObject {
 export const interactiveObjects: InteractiveObject[] = [
   {
     name: "IntroView",
-    desktop: { targetPosition: [0, 2.38, 10], targetQuaternion: [-0.251, 0, 0], zoom: 44 },
+    desktop: { targetPosition: [0, 2.38, 10], targetQuaternion: [-0.251, 0, 0], zoom: 34 },
     tablet: { targetPosition: [0, 1.8, 10], targetQuaternion: [-0.25, 0, 0], zoom: 38 },
     mobile: { targetPosition: [0, 1.2, 10], targetQuaternion: [-0.23, 0, 0], zoom: 30 },
   },
   {
     name: "InitialView",
-    desktop: { targetPosition: [0, 0, 10], targetQuaternion: [0, 0, 0], zoom: 65 },
-    tablet: { targetPosition: [0, 0, 10], targetQuaternion: [0, 0, 0], zoom: 55 },
-    mobile: { targetPosition: [0, 0, 10], targetQuaternion: [0, 0, 0], zoom: 45 },
+    desktop: { targetPosition: [0, 0, 10], targetQuaternion: [0, 0, 0], zoom: 60 },
+    tablet: { targetPosition: [0, 0, 10], targetQuaternion: [0, 0, 0], zoom: 50 },
+    mobile: { targetPosition: [0, 0, 10], targetQuaternion: [0, 0, 0], zoom: 25 },
   },
   {
     name: "Clock",
