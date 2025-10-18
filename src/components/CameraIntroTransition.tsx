@@ -2,7 +2,7 @@
 
 import { useThree } from "@react-three/fiber";
 import gsap from "gsap";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import * as THREE from "three";
 
 import { interactiveObjects } from "@/data/interactiveObjects";
@@ -14,15 +14,18 @@ export default function CameraIntroTransition() {
   const { hasEntered, setHasIntroFinished } = useInteractionStore();
   const { isMobile, isTablet } = useResponsiveStore();
 
-  // Helper to get correct transform based on device type
-  const getTransformForDevice = (name: string) => {
-    const object = interactiveObjects.find((o) => o.name === name);
-    if (!object) return null;
+  // ✅ useCallback ensures stable function reference for useEffect
+  const getTransformForDevice = useCallback(
+    (name: string) => {
+      const object = interactiveObjects.find((o) => o.name === name);
+      if (!object) return null;
 
-    if (isMobile && object.mobile) return object.mobile;
-    if (isTablet && object.tablet) return object.tablet;
-    return object.desktop; // fallback
-  };
+      if (isMobile && object.mobile) return object.mobile;
+      if (isTablet && object.tablet) return object.tablet;
+      return object.desktop; // fallback
+    },
+    [isMobile, isTablet]
+  );
 
   useEffect(() => {
     if (!hasEntered) return;
@@ -40,7 +43,7 @@ export default function CameraIntroTransition() {
       onComplete: () => setHasIntroFinished(true),
     });
 
-    // Animate from current camera state → InitialView (responsive)
+    // Animate camera from current state → InitialView (responsive)
     tl.to(camera.position, {
       x: toPos.x,
       y: toPos.y,
@@ -64,7 +67,7 @@ export default function CameraIntroTransition() {
         },
         "<"
       );
-  }, [hasEntered, camera, isMobile, isTablet, setHasIntroFinished]);
+  }, [hasEntered, camera, getTransformForDevice, setHasIntroFinished]);
 
   return null;
 }

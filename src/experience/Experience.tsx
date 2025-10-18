@@ -17,14 +17,14 @@ import Scene from "./Scene";
 const Experience = () => {
   const cameraRef = useRef<THREE.OrthographicCamera>(null);
   const { setPointer } = useInput();
-const { isMobile, isTablet, isDesktop, updateDimensions } = useResponsiveStore();
+  const { isMobile, isTablet, isDesktop, updateDimensions } =
+    useResponsiveStore();
 
   useEffect(() => {
     updateDimensions(); // Initialize on mount
     window.addEventListener("resize", updateDimensions);
-    console.log(isMobile, isTablet, isDesktop,);
+    console.log(isMobile, isTablet, isDesktop);
     return () => window.removeEventListener("resize", updateDimensions);
-
   }, [isDesktop, isMobile, isTablet, updateDimensions]);
 
   useEffect(() => {
