@@ -8,6 +8,8 @@ import * as THREE from "three";
 import useInput from "@/store/useInput";
 
 // import CameraGUI from "./components/CameraGUI";
+import { useResponsiveStore } from "@/store/useResponsiveStore";
+
 import CameraManager from "./components/CameraManager";
 import RaycasterHandler from "./components/RaycasterHandler";
 import Scene from "./Scene";
@@ -15,6 +17,15 @@ import Scene from "./Scene";
 const Experience = () => {
   const cameraRef = useRef<THREE.OrthographicCamera>(null);
   const { setPointer } = useInput();
+const { isMobile, isTablet, isDesktop, updateDimensions } = useResponsiveStore();
+
+  useEffect(() => {
+    updateDimensions(); // Initialize on mount
+    window.addEventListener("resize", updateDimensions);
+    console.log(isMobile, isTablet, isDesktop,);
+    return () => window.removeEventListener("resize", updateDimensions);
+
+  }, [isDesktop, isMobile, isTablet, updateDimensions]);
 
   useEffect(() => {
     interface PointerMoveEvent extends MouseEvent {
