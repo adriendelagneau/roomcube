@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface OrientationModalProps {
   onPortraitChange?: (isPortrait: boolean) => void;
@@ -9,17 +9,34 @@ interface OrientationModalProps {
 const OrientationModal: React.FC<OrientationModalProps> = ({ onPortraitChange }) => {
   const [isPortrait, setIsPortrait] = useState<boolean>(false);
 
-  const checkOrientation = () => {
-    const portrait = window.innerHeight > window.innerWidth;
-    setIsPortrait(portrait);
-    if (onPortraitChange) onPortraitChange(portrait);
-  };
+  const checkOrientation = useCallback(() => {
+    // Debounce a bit to allow browser UI (address bar, etc.) to settle after rotation
+    setTimeout(() => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      // your original rule: width must be greater than height
+      const portrait = height > width;
+
+      setIsPortrait(portrait);
+      if (onPortraitChange) onPortraitChange(portrait);
+    }, 150); // 150ms delay smooths iOS Safari’s delayed resize event
+  }, [onPortraitChange]);
 
   useEffect(() => {
     checkOrientation();
+
+    // Listen for all relevant events
     window.addEventListener("resize", checkOrientation);
-    return () => window.removeEventListener("resize", checkOrientation);
-  }, []);
+    window.addEventListener("orientationchange", checkOrientation);
+    window.screen.orientation?.addEventListener("change", checkOrientation);
+
+    return () => {
+      window.removeEventListener("resize", checkOrientation);
+      window.removeEventListener("orientationchange", checkOrientation);
+      window.screen.orientation?.removeEventListener("change", checkOrientation);
+    };
+  }, [checkOrientation]);
 
   if (!isPortrait) return null;
 

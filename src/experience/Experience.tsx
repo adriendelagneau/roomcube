@@ -7,10 +7,9 @@ import * as THREE from "three";
 
 import OrientationModal from "@/components/OrientationModal";
 import useInput from "@/store/useInput";
-
-// import CameraGUI from "./components/CameraGUI";
 import { useResponsiveStore } from "@/store/useResponsiveStore";
 
+import CameraGUI from "./components/CameraGUI";
 import CameraManager from "./components/CameraManager";
 import RaycasterHandler from "./components/RaycasterHandler";
 import Scene from "./Scene";
@@ -72,7 +71,7 @@ const Experience = () => {
         />
         <Scene />
         <RaycasterHandler />
-        {/* <CameraGUI cameraRef={cameraRef} /> */}
+        <CameraGUI cameraRef={cameraRef} />
         <CameraManager camera={cameraRef} />
       </Canvas>
       <OrientationModal onPortraitChange={setIsPortrait} />

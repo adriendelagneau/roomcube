@@ -30,7 +30,7 @@ export const interactiveObjects: InteractiveObject[] = [
   },
   {
     name: "Clock",
-    desktop: { targetPosition: [6.07, -0.57, 10], targetQuaternion: [0.2, 0.748, 0], zoom: 400 },
+    desktop: { targetPosition: [5.978, 2.809, 10], targetQuaternion: [0, 0.748407, 0.148407], zoom: 256 },
     tablet: { targetPosition: [5.5, -0.4, 10], targetQuaternion: [0.2, 0.7, 0], zoom: 350 },
     mobile: { targetPosition: [5, -0.2, 10], targetQuaternion: [0.18, 0.65, 0], zoom: 300 },
     title: "Clock",
