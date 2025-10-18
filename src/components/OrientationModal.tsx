@@ -1,7 +1,3 @@
-
-
-
-
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
@@ -11,26 +7,26 @@ interface OrientationModalProps {
 }
 
 const OrientationModal: React.FC<OrientationModalProps> = ({ onPortraitChange }) => {
-  const [isPortrait, setIsPortrait] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const checkOrientation = useCallback(() => {
-    // Debounce a bit to allow browser UI (address bar, etc.) to settle after rotation
+    // Debounce for iOS Safari UI adjustment
     setTimeout(() => {
       const width = window.innerWidth;
       const height = window.innerHeight;
 
-      // your original rule: width must be greater than height
-      const portrait = height > width;
+      // Show modal only for portrait devices with width < 1024
+      const portrait = height > width && width < 1024;
 
-      setIsPortrait(portrait);
+      setShowModal(portrait);
       if (onPortraitChange) onPortraitChange(portrait);
-    }, 150); // 150ms delay smooths iOS Safari’s delayed resize event
+    }, 150);
   }, [onPortraitChange]);
 
   useEffect(() => {
     checkOrientation();
 
-    // Listen for all relevant events
+    // Listen for changes
     window.addEventListener("resize", checkOrientation);
     window.addEventListener("orientationchange", checkOrientation);
     window.screen.orientation?.addEventListener("change", checkOrientation);
@@ -42,10 +38,12 @@ const OrientationModal: React.FC<OrientationModalProps> = ({ onPortraitChange })
     };
   }, [checkOrientation]);
 
-  if (!isPortrait) return null;
-
   return (
-    <div className="absolute inset-0 bg-black bg-opacity-90 text-white flex flex-col items-center justify-center z-50 text-center px-4">
+    <div
+      className={`absolute inset-0 bg-black bg-opacity-90 text-white flex flex-col items-center justify-center z-50 text-center px-4
+        transition-opacity duration-500 ease-in-out
+        ${showModal ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+    >
       <h1 className="text-2xl md:text-4xl font-bold mb-4">
         Please rotate your device to landscape
       </h1>
