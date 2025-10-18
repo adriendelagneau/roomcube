@@ -2,11 +2,17 @@
 
 import { useEffect, useState } from "react";
 
-const OrientationModal: React.FC = () => {
+interface OrientationModalProps {
+  onPortraitChange?: (isPortrait: boolean) => void;
+}
+
+const OrientationModal: React.FC<OrientationModalProps> = ({ onPortraitChange }) => {
   const [isPortrait, setIsPortrait] = useState<boolean>(false);
 
   const checkOrientation = () => {
-    setIsPortrait(window.innerHeight > window.innerWidth);
+    const portrait = window.innerHeight > window.innerWidth;
+    setIsPortrait(portrait);
+    if (onPortraitChange) onPortraitChange(portrait);
   };
 
   useEffect(() => {

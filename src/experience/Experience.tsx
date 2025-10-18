@@ -5,6 +5,7 @@ import { Canvas } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
+import OrientationModal from "@/components/OrientationModal";
 import useInput from "@/store/useInput";
 
 // import CameraGUI from "./components/CameraGUI";
@@ -19,7 +20,7 @@ const Experience = () => {
   const { setPointer } = useInput();
   const { isMobile, isTablet, isDesktop, updateDimensions } =
     useResponsiveStore();
-    const [isPortrait, setIsPortrait] = useState<boolean>(false);
+  const [isPortrait, setIsPortrait] = useState<boolean>(false);
 
   const checkOrientation = () => {
     setIsPortrait(window.innerHeight > window.innerWidth);
@@ -57,11 +58,11 @@ const Experience = () => {
   });
   return (
     <>
-      
       <Canvas
         flat
         gl={{ antialias: false }}
         style={{ position: "fixed", zIndex: 1, top: 0, left: 0 }}
+        frameloop={isPortrait ? "demand" : "always"} // Pause when in portrait
       >
         <OrthographicCamera
           ref={cameraRef}
@@ -74,6 +75,7 @@ const Experience = () => {
         {/* <CameraGUI cameraRef={cameraRef} /> */}
         <CameraManager camera={cameraRef} />
       </Canvas>
+      <OrientationModal onPortraitChange={setIsPortrait} />
     </>
   );
 };

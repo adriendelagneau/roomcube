@@ -25,7 +25,7 @@ export const interactiveObjects: InteractiveObject[] = [
   {
     name: "InitialView",
     desktop: { targetPosition: [0, 0, 10], targetQuaternion: [0, 0, 0], zoom: 60 },
-    tablet: { targetPosition: [0, 0, 10], targetQuaternion: [0, 0, 0], zoom: 50 },
+    tablet: { targetPosition: [0, 0, 10], targetQuaternion: [0, 0, 0], zoom: 45 },
     mobile: { targetPosition: [0, 0, 10], targetQuaternion: [0, 0, 0], zoom: 25 },
   },
   {

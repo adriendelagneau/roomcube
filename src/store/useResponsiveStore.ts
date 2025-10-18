@@ -25,8 +25,8 @@ export const useResponsiveStore = create<ResponsiveState>((set) => {
     const height = window.innerHeight;
 
     return {
-      isMobile: width < 768,
-      isTablet: width >= 768 && width < 1280,
+      isMobile: width < 1024,
+      isTablet: width >= 1024 && width < 1280,
       isDesktop: width >= 1280,
       screenWidth: width,
       screenHeight: height,
