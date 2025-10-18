@@ -7,16 +7,28 @@ import * as THREE from "three";
 
 import { interactiveObjects } from "@/data/interactiveObjects";
 import useInteractionStore from "@/store/useInteractionStore";
+import { useResponsiveStore } from "@/store/useResponsiveStore";
 
 export default function CameraIntroTransition() {
   const camera = useThree((state) => state.camera);
   const { hasEntered, setHasIntroFinished } = useInteractionStore();
+  const { isMobile, isTablet } = useResponsiveStore();
+
+  // Helper to get correct transform based on device type
+  const getTransformForDevice = (name: string) => {
+    const object = interactiveObjects.find((o) => o.name === name);
+    if (!object) return null;
+
+    if (isMobile && object.mobile) return object.mobile;
+    if (isTablet && object.tablet) return object.tablet;
+    return object.desktop; // fallback
+  };
 
   useEffect(() => {
     if (!hasEntered) return;
-    const to = interactiveObjects.find((o) => o.name == "InitialView");
+
+    const to = getTransformForDevice("InitialView");
     if (!to) return;
-    console.log("return");
 
     const toPos = new THREE.Vector3().fromArray(to.targetPosition);
     const toQuat = new THREE.Quaternion().setFromEuler(
@@ -28,7 +40,7 @@ export default function CameraIntroTransition() {
       onComplete: () => setHasIntroFinished(true),
     });
 
-    // 🎬 Animate only to InitialView — starting from the camera’s current state
+    // Animate from current camera state → InitialView (responsive)
     tl.to(camera.position, {
       x: toPos.x,
       y: toPos.y,
@@ -52,7 +64,7 @@ export default function CameraIntroTransition() {
         },
         "<"
       );
-  }, [hasEntered, camera, setHasIntroFinished]);
+  }, [hasEntered, camera, isMobile, isTablet, setHasIntroFinished]);
 
   return null;
 }
