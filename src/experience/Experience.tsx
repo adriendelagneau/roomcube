@@ -2,10 +2,24 @@
 
 import { OrthographicCamera } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
 
 import Scene from "./Scene";
 
 const Experience = () => {
+  const pointer = useRef(new THREE.Vector2());
+
+  // Track mouse movement and update pointer position
+  useEffect(() => {
+    const handlePointerMove = (event: MouseEvent) => {
+      pointer.current.x = (event.clientX / window.innerWidth) * 2 - 1;
+      pointer.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    };
+    window.addEventListener("pointermove", handlePointerMove);
+    return () => window.removeEventListener("pointermove", handlePointerMove);
+  }, []);
+
   return (
     <Canvas
       flat
@@ -21,7 +35,7 @@ const Experience = () => {
       }}
     >
       <OrthographicCamera makeDefault position={[0, 0, 10]} zoom={60} />
-      <Scene />
+      <Scene pointer={pointer} />
     </Canvas>
   );
 };
