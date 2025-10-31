@@ -1,21 +1,26 @@
-import { useFrame } from "@react-three/fiber";
-import { useRef } from "react";
-import { Mesh } from "three";
+import { Suspense } from "react";
+
+import Room_1_1 from "./models/Room-1-1";
+import Room_1_2 from "./models/Room-1-2";
+import Room_1_3 from "./models/Room-1-3";
+import Room_1_4 from "./models/Room-1-4";
 
 export default function Scene() {
-  const meshRef = useRef<Mesh | null>(null);
-
-  useFrame((state, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x += delta * 0.6;
-      meshRef.current.rotation.y += delta * 0.9;
-    }
-  });
-
   return (
-    <mesh ref={meshRef} position={[0, 0, 0]}>
-      <boxGeometry args={[2, 2, 2]} />
-      <meshBasicMaterial attach="material" color={"#ff7a18"} />
-    </mesh>
+    <Suspense fallback={null}>
+      <group
+        rotation={[Math.PI / 14, 0, 0]}
+        position={[0, -4.6, 0]}
+        scale={1.7}
+      >
+        <group>
+          {/* Room */}
+          <Room_1_1 />
+          <Room_1_2 />
+          <Room_1_3 />
+          <Room_1_4 />
+        </group>
+      </group>
+    </Suspense>
   );
 }
