@@ -18,7 +18,7 @@ const Scene = ({ pointer }: { pointer: React.RefObject<THREE.Vector2> }) => {
   const gridPlanesRef = useRef(null);
   const { clickedObject } = useInteractionStore();
 
-  // Animate scene rotation based on pointer position
+
   useFrame(() => {
     if (!groupRef.current) return;
     if (!clickedObject) {
