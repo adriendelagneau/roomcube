@@ -28,7 +28,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "**/*.mts",
+    "src/experience/components/models/Hit-boxes.tsx"
   ],
   "exclude": ["node_modules"]
 }

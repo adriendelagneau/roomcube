@@ -2,15 +2,19 @@ import { useFrame } from "@react-three/fiber";
 import { Suspense, useRef } from "react";
 import * as THREE from "three";
 
-import Room_1_1 from "./models/Room-1-1";
-import Room_1_2 from "./models/Room-1-2";
-import Room_1_3 from "./models/Room-1-3";
-import Room_1_4 from "./models/Room-1-4";
+import GridPlanes from "./components/GridPlanes";
+import HitBoxes from "./components/models/Hit-boxes";
+import Room_1_1 from "./components/models/Room-1-1";
+import Room_1_2 from "./components/models/Room-1-2";
+import Room_1_3 from "./components/models/Room-1-3";
+import Room_1_4 from "./components/models/Room-1-4";
 
 const Scene = ({ pointer }: { pointer: React.RefObject<THREE.Vector2> }) => {
   const groupRef = useRef<THREE.Group>(null!);
   const rotationX = useRef(0);
   const rotationY = useRef(0);
+  const gridPlanesRef = useRef(null);
+
   // Animate scene rotation based on pointer position
   useFrame(() => {
     if (!groupRef.current) return;
@@ -32,11 +36,22 @@ const Scene = ({ pointer }: { pointer: React.RefObject<THREE.Vector2> }) => {
         scale={1.7}
       >
         <group ref={groupRef}>
+          {/* GridPlanes */}
+          <GridPlanes
+            ref={gridPlanesRef}
+            position={[-1, -1, -15]}
+            rows={20}
+            columns={20}
+            planeWidth={2.5}
+            planeDepth={2.5}
+          />
           {/* Room */}
           <Room_1_1 />
           <Room_1_2 />
           <Room_1_3 />
           <Room_1_4 />
+          {/* Hit-boxes */}
+          <HitBoxes />
         </group>
       </group>
     </Suspense>

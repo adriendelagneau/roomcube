@@ -10,7 +10,6 @@ import Scene from "./Scene";
 const Experience = () => {
   const pointer = useRef(new THREE.Vector2());
 
-  // Track mouse movement and update pointer position
   useEffect(() => {
     const handlePointerMove = (event: MouseEvent) => {
       pointer.current.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -23,7 +22,7 @@ const Experience = () => {
   return (
     <Canvas
       flat
-      gl={{ antialias: false }}
+      gl={{ antialias: false, alpha: true }}
       style={{
         position: "fixed",
         top: 0,
@@ -31,10 +30,11 @@ const Experience = () => {
         width: "100%",
         height: "100%",
         zIndex: 1,
-        background: "#0a0a0a",
+        background: "transparent",
       }}
     >
       <OrthographicCamera makeDefault position={[0, 0, 10]} zoom={60} />
+
       <Scene pointer={pointer} />
     </Canvas>
   );
