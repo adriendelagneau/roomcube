@@ -21,15 +21,30 @@ const useInteractionStore = create<InteractionState>((set, get) => ({
   hasEntered: false,
   hasIntroFinished: false,
 
-  setHoveredObject: (name) => set({ hoveredObject: name }),
+  setHoveredObject: (name) => {
+    if (get().hoveredObject === name) return;
+    set({ hoveredObject: name });
+  },
+
   setClickedObject: (name) => {
-    const { clickedObject } = get();
-    if (clickedObject === name) return;
+    if (get().clickedObject === name) return; // ✅ prevents re-click camera twitch
     set({ clickedObject: name });
   },
-  setIsEntered: (entered) => set({ isEntered: entered }),
-  setHasEntered: (entered) => set({ hasEntered: entered }),
-  setHasIntroFinished: (finished) => set({ hasIntroFinished: finished }),
+
+  setIsEntered: (entered) => {
+    if (get().isEntered === entered) return;
+    set({ isEntered: entered });
+  },
+
+  setHasEntered: (entered) => {
+    if (get().hasEntered === entered) return;
+    set({ hasEntered: entered });
+  },
+
+  setHasIntroFinished: (finished) => {
+    if (get().hasIntroFinished === finished) return;
+    set({ hasIntroFinished: finished });
+  },
 }));
 
 export default useInteractionStore;

@@ -31,18 +31,40 @@ const Experience = () => {
   }, []);
 
   // Handle hover and click outside interactive objects
+  // Experience.tsx
+
   const handlePointerEvent = (
     e: ThreeEvent<PointerEvent>,
     type: "hover" | "click"
   ) => {
     const intersections = e.intersections ?? [];
-    const hitInteractive = intersections.some((i) =>
+    const hitInteractive = intersections.find((i) =>
       interactiveNames.includes(i.object.name.toLowerCase())
     );
 
-    if (!hitInteractive) {
-      if (type === "hover") setHoveredObject(null);
-      if (type === "click") setClickedObject(null);
+    const currentClicked = useInteractionStore.getState().clickedObject;
+
+    if (type === "hover") {
+      // Only clear hover if pointer is truly not over any interactive object
+      if (!hitInteractive) setHoveredObject(null);
+    }
+
+    if (type === "click") {
+      if (hitInteractive) {
+        // Clicking on an interactive object → handled elsewhere
+        return;
+      }
+
+      // Only reset clickedObject if the pointer is NOT over the currently selected object
+      if (currentClicked) {
+        const pointerOnClicked = intersections.some(
+          (i) => i.object.name.toLowerCase() === currentClicked.toLowerCase()
+        );
+
+        if (!pointerOnClicked) {
+          setClickedObject(null); // safe reset
+        }
+      }
     }
   };
 
@@ -62,7 +84,7 @@ const Experience = () => {
       onPointerMove={(e) =>
         handlePointerEvent(e as unknown as ThreeEvent<PointerEvent>, "hover")
       }
-      onPointerDown={(e) =>
+      onPointerUp={(e) =>
         handlePointerEvent(e as unknown as ThreeEvent<PointerEvent>, "click")
       }
     >

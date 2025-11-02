@@ -139,7 +139,9 @@ const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
               setHovered((prev) => ({ ...prev, [obj.name]: false }));
               document.body.style.cursor = "auto";
             }}
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
+              // Store will ignore clicks on the already selected object
               useInteractionStore.getState().setClickedObject(obj.name);
             }}
           />

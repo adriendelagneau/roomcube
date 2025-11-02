@@ -18,7 +18,6 @@ const Scene = ({ pointer }: { pointer: React.RefObject<THREE.Vector2> }) => {
   const gridPlanesRef = useRef(null);
   const { clickedObject } = useInteractionStore();
 
-
   useFrame(() => {
     if (!groupRef.current) return;
     if (!clickedObject) {
