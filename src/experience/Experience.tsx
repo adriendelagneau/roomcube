@@ -2,6 +2,12 @@
 
 import { OrthographicCamera } from "@react-three/drei";
 import { Canvas, ThreeEvent } from "@react-three/fiber";
+import {
+  Bloom,
+  EffectComposer,
+  ToneMapping,
+} from "@react-three/postprocessing";
+import { KernelSize, Resolution, ToneMappingMode } from "postprocessing";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
@@ -97,6 +103,19 @@ const Experience = () => {
 
       <Scene pointer={pointer} />
       <CameraManager camera={cameraRef} />
+      <EffectComposer>
+        {/* <Bloom
+          intensity={0.4} // The bloom intensity.
+          blurPass={undefined} // A blur pass.
+          kernelSize={KernelSize.LARGE} // blur kernel size
+          luminanceThreshold={0.5} // luminance threshold. Raise this value to mask out darker elements in the scene.
+          luminanceSmoothing={0.015} // smoothness of the luminance threshold. Range is [0, 1]
+          mipmapBlur={false} // Enables or disables mipmap blur.
+          resolutionX={Resolution.AUTO_SIZE} // The horizontal resolution.
+          resolutionY={Resolution.AUTO_SIZE} // The vertical resolution.
+        /> */}
+        <ToneMapping />
+      </EffectComposer>
     </Canvas>
   );
 };

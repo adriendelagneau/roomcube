@@ -43,7 +43,7 @@ const Room_1_4: React.FC<React.ComponentProps<"group">> = (props) => {
       secondsRef.current.rotation.x = -(seconds * (Math.PI / 30));
   });
 
-  // 🖼 Photo frame list
+  // 🖼 Photo frame names
   const photos = [
     "photo-1",
     "photo-2",
@@ -67,6 +67,7 @@ const Room_1_4: React.FC<React.ComponentProps<"group">> = (props) => {
           <mesh geometry={nodes.Clock.geometry}>
             <meshBasicMaterial map={bakedTexture} />
           </mesh>
+
           {nodes.hours && (
             <mesh ref={hoursRef} geometry={nodes.hours.geometry}>
               <meshBasicMaterial map={bakedTexture} />
@@ -96,7 +97,7 @@ const Room_1_4: React.FC<React.ComponentProps<"group">> = (props) => {
         </mesh>
       )}
 
-      {/* 🪞 Table or plane prop */}
+      {/* 🪞 Table Plane */}
       {nodes.Plane040 && (
         <mesh
           geometry={nodes.Plane040.geometry}
@@ -107,7 +108,19 @@ const Room_1_4: React.FC<React.ComponentProps<"group">> = (props) => {
         </mesh>
       )}
 
-      {/* 🖼 Photos on wall */}
+      {/* 💨 Coffee Smoke */}
+      {nodes["coffe-smoke"] && (
+        <mesh
+          name="coffe-smoke"
+          geometry={nodes["coffe-smoke"].geometry}
+          position={[-0.312, 1.972, 2.997]}
+          rotation={[0, -0.486, 0]}
+        >
+          <meshBasicMaterial map={bakedTexture} transparent opacity={0.5} />
+        </mesh>
+      )}
+
+      {/* 🖼 Photos on the wall */}
       {photos.map((name) => {
         const node = nodes[name];
         if (!node) return null;

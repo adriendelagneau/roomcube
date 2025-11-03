@@ -19,7 +19,7 @@ const Plane: React.FC<PlaneProps> = ({ position, planeDepth, planeWidth }) => {
     return new THREE.MeshStandardMaterial({
       color: "##e8f2ff", // light bluish-white
       emissive: "#66c2ff", // subtle glowing blue
-      emissiveIntensity: 0.4,
+      emissiveIntensity: 0.78,
       transparent: true,
       opacity: 0,
       polygonOffset: true,

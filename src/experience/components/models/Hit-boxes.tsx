@@ -22,6 +22,7 @@ const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
         transparent: true,
         opacity: 0,
         depthWrite: false,
+        toneMapped: false,
       }),
     []
   );
@@ -32,7 +33,7 @@ const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
       new MeshStandardMaterial({
         color: "#daff47",
         emissive: "#daff47",
-        emissiveIntensity: 1.5,
+        emissiveIntensity: 1.0,
       }),
     []
   );

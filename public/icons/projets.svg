@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 viewBox="0 0 512 512" xml:space="preserve">
+<rect x="197.818" y="356.364" style="fill:#A8F7FF;" width="116.364" height="116.364"/>
+<path style="fill:#074761;" d="M512,53.818c0-12.8-10.473-23.273-23.273-23.273H23.273C10.473,30.545,0,41.018,0,53.818v267.636
+	l256,23.273l256-23.273V53.818z"/>
+<rect x="128" y="90.667" style="fill:#FFD178;" width="256" height="151.121"/>
+<polygon style="fill:#FE623F;" points="308.497,162.124 256,217.509 203.503,162.124 128,241.792 128,261.333 384,261.333 
+	384,241.792 "/>
+<circle style="fill:#FF8D46;" cx="256" cy="144.71" r="26.667"/>
+<g>
+	<path style="fill:#73DCE6;" d="M0,321.455v34.909c0,12.8,10.473,23.273,23.273,23.273h465.455c12.8,0,23.273-10.473,23.273-23.273
+		v-34.909H0z"/>
+	<path style="fill:#73DCE6;" d="M395.636,481.455H116.364c-4.82,0-8.727-3.906-8.727-8.727s3.907-8.727,8.727-8.727h279.273
+		c4.821,0,8.727,3.906,8.727,8.727S400.457,481.455,395.636,481.455z"/>
+</g>
+</svg>

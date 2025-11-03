@@ -10,6 +10,8 @@ import Room_1_1 from "./components/models/Room-1-1";
 import Room_1_2 from "./components/models/Room-1-2";
 import Room_1_3 from "./components/models/Room-1-3";
 import Room_1_4 from "./components/models/Room-1-4";
+import MorphParticles from "./components/morphing/Particles";
+import Smoke from "./components/smoke.tsx/Smoke";
 
 const Scene = ({ pointer }: { pointer: React.RefObject<THREE.Vector2> }) => {
   const groupRef = useRef<THREE.Group>(null!);
@@ -56,6 +58,10 @@ const Scene = ({ pointer }: { pointer: React.RefObject<THREE.Vector2> }) => {
           <Room_1_4 />
           {/* Hit-boxes */}
           <HitBoxes />
+          {/* Smoke */}
+          {/* <Smoke /> */}
+          {/* Particles */}
+          <MorphParticles />
         </group>
       </group>
     </Suspense>
