@@ -62,6 +62,7 @@ const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
         ease: "power2.out",
       });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hoveredObject, clickedObject]);
 
   // 🧱 Object data from GLB

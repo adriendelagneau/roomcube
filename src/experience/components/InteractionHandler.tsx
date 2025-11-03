@@ -1,6 +1,6 @@
 "use client";
 
-import { useThree, useFrame, ThreeEvent } from "@react-three/fiber";
+import { useThree, useFrame } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 

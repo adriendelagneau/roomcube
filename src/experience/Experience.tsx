@@ -1,18 +1,15 @@
 "use client";
 
 import { OrthographicCamera } from "@react-three/drei";
-import { Canvas, ThreeEvent } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import {
-  Bloom,
+  // Bloom,
   EffectComposer,
   ToneMapping,
 } from "@react-three/postprocessing";
-import { KernelSize, Resolution, ToneMappingMode } from "postprocessing";
+// import { KernelSize, Resolution, ToneMappingMode } from "postprocessing";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
-
-import { interactiveObjects } from "@/data/interactiveObjects";
-import useInteractionStore from "@/store/useInteractionStore";
 
 import CameraManager from "./components/CameraManager";
 import InteractionHandler from "./components/InteractionHandler";
@@ -21,12 +18,6 @@ import Scene from "./Scene";
 const Experience = () => {
   const cameraRef = useRef<THREE.OrthographicCamera>(null);
   const pointer = useRef(new THREE.Vector2());
-  const { setHoveredObject, setClickedObject } = useInteractionStore();
-
-  // Combine all interactive object names (3D + sidebar)
-  const interactiveNames = [
-    ...interactiveObjects.map((obj) => obj.name.toLowerCase()),
-  ];
 
   useEffect(() => {
     const handlePointerMove = (event: MouseEvent) => {
