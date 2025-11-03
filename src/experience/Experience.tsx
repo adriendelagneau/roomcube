@@ -15,6 +15,7 @@ import { interactiveObjects } from "@/data/interactiveObjects";
 import useInteractionStore from "@/store/useInteractionStore";
 
 import CameraManager from "./components/CameraManager";
+import InteractionHandler from "./components/InteractionHandler";
 import Scene from "./Scene";
 
 const Experience = () => {
@@ -39,41 +40,6 @@ const Experience = () => {
   // Handle hover and click outside interactive objects
   // Experience.tsx
 
-  const handlePointerEvent = (
-    e: ThreeEvent<PointerEvent>,
-    type: "hover" | "click"
-  ) => {
-    const intersections = e.intersections ?? [];
-    const hitInteractive = intersections.find((i) =>
-      interactiveNames.includes(i.object.name.toLowerCase())
-    );
-
-    const currentClicked = useInteractionStore.getState().clickedObject;
-
-    if (type === "hover") {
-      // Only clear hover if pointer is truly not over any interactive object
-      if (!hitInteractive) setHoveredObject(null);
-    }
-
-    if (type === "click") {
-      if (hitInteractive) {
-        // Clicking on an interactive object → handled elsewhere
-        return;
-      }
-
-      // Only reset clickedObject if the pointer is NOT over the currently selected object
-      if (currentClicked) {
-        const pointerOnClicked = intersections.some(
-          (i) => i.object.name.toLowerCase() === currentClicked.toLowerCase()
-        );
-
-        if (!pointerOnClicked) {
-          setClickedObject(null); // safe reset
-        }
-      }
-    }
-  };
-
   return (
     <Canvas
       flat
@@ -87,12 +53,6 @@ const Experience = () => {
         zIndex: 1,
         background: "transparent",
       }}
-      onPointerMove={(e) =>
-        handlePointerEvent(e as unknown as ThreeEvent<PointerEvent>, "hover")
-      }
-      onPointerUp={(e) =>
-        handlePointerEvent(e as unknown as ThreeEvent<PointerEvent>, "click")
-      }
     >
       <OrthographicCamera
         ref={cameraRef}
@@ -103,6 +63,7 @@ const Experience = () => {
 
       <Scene pointer={pointer} />
       <CameraManager camera={cameraRef} />
+      <InteractionHandler />
       <EffectComposer>
         {/* <Bloom
           intensity={0.4} // The bloom intensity.

@@ -2,7 +2,7 @@
 
 import { useGLTF } from "@react-three/drei";
 import gsap from "gsap";
-import React, { useMemo, useRef, useState, useEffect } from "react";
+import React, { useMemo, useRef, useEffect } from "react";
 import { Mesh, MeshBasicMaterial, MeshStandardMaterial } from "three";
 
 import useInteractionStore from "@/store/useInteractionStore";
@@ -13,9 +13,9 @@ type GLTFResult = {
 
 const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
   const { nodes } = useGLTF("/models/hit-boxes.glb") as unknown as GLTFResult;
-  const { clickedObject } = useInteractionStore();
+  const { hoveredObject, clickedObject } = useInteractionStore();
 
-  // 🟦 Invisible but clickable hit-box material
+  // 🟦 Invisible but clickable hit-box material (still needed for raycasting)
   const hitBoxMaterial = useMemo(
     () =>
       new MeshBasicMaterial({
@@ -27,7 +27,7 @@ const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
     []
   );
 
-  // 💠 Glowing animated corners material
+  // 💠 Glowing corners material
   const cornersMaterial = useMemo(
     () =>
       new MeshStandardMaterial({
@@ -47,21 +47,12 @@ const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
     Monkey: useRef<Mesh>(null),
   };
 
-  // 💡 Hover states
-  const [hovered, setHovered] = useState({
-    Clock: false,
-    Library: false,
-    Mug: false,
-    Photos: false,
-    Monkey: false,
-  });
-
-  // 🎞 Animate corners when hovered or clicked
+  // 🎞 Animate corner glow based on hover or click state
   useEffect(() => {
     Object.entries(refs).forEach(([key, ref]) => {
       const isSelected = clickedObject === key;
-      const isHovered = hovered[key as keyof typeof hovered];
-      const shouldShow = clickedObject ? isSelected : isHovered;
+      const isHovered = hoveredObject === key;
+      const shouldShow = isSelected || (!clickedObject && isHovered);
 
       gsap.to(ref.current?.scale || {}, {
         x: shouldShow ? 1 : 0,
@@ -71,8 +62,7 @@ const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
         ease: "power2.out",
       });
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hovered, clickedObject]);
+  }, [hoveredObject, clickedObject]);
 
   // 🧱 Object data from GLB
   const objects = [
@@ -117,7 +107,7 @@ const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
     <group {...props} dispose={null}>
       {objects.map((obj) => (
         <group key={obj.name}>
-          {/* 💠 Glowing animated corners */}
+          {/* 💠 Animated glow corners */}
           <mesh
             ref={refs[obj.name as keyof typeof refs]}
             geometry={nodes[obj.corner].geometry}
@@ -126,25 +116,12 @@ const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
             scale={0}
           />
 
-          {/* 🟦 Invisible clickable hit-box */}
+          {/* 🟦 Invisible hit-box (no event handlers anymore) */}
           <mesh
             name={obj.name}
             geometry={nodes[obj.box].geometry}
             material={hitBoxMaterial}
             position={obj.positionBox as [number, number, number]}
-            onPointerOver={() => {
-              setHovered((prev) => ({ ...prev, [obj.name]: true }));
-              document.body.style.cursor = "pointer";
-            }}
-            onPointerOut={() => {
-              setHovered((prev) => ({ ...prev, [obj.name]: false }));
-              document.body.style.cursor = "auto";
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              // Store will ignore clicks on the already selected object
-              useInteractionStore.getState().setClickedObject(obj.name);
-            }}
           />
         </group>
       ))}
@@ -152,7 +129,7 @@ const HitBoxes: React.FC<React.ComponentProps<"group">> = (props) => {
   );
 };
 
-// 🔹 Preload GLB for performance
+// 🔹 Preload GLB
 useGLTF.preload("/models/hit-boxes.glb");
 
 export default HitBoxes;
