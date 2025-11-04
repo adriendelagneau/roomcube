@@ -5,6 +5,7 @@ import { Canvas } from "@react-three/fiber";
 import {
   // Bloom,
   EffectComposer,
+  Outline,
   ToneMapping,
 } from "@react-three/postprocessing";
 // import { KernelSize, Resolution, ToneMappingMode } from "postprocessing";
@@ -60,7 +61,13 @@ const Experience = () => {
       <Scene pointer={pointer} />
       <CameraManager camera={cameraRef} />
       <InteractionHandler />
-      <EffectComposer>
+      <EffectComposer multisampling={8} autoClear={false}>
+        <Outline
+          blur
+          blendFunction={BlendFunction.SCREEN}
+          edgeStrength={3}
+          width={1000}
+        />
         {/* <Bloom
           intensity={0.4} // The bloom intensity.
           blurPass={undefined} // A blur pass.
