@@ -5,6 +5,7 @@ import gsap from "gsap";
 import React, { useRef } from "react";
 
 import { InteractiveObject, photoObjects } from "@/data/interactiveObjects";
+import useInteractionStore from "@/store/useInteractionStore";
 import { textSplitter } from "@/utils/textSplitter";
 
 interface SidebarPhotosProps {
@@ -14,6 +15,7 @@ interface SidebarPhotosProps {
 const SidebarPhotos: React.FC<SidebarPhotosProps> = ({ object }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const underlineRef = useRef<HTMLSpanElement>(null);
+  const { setHoveredObject } = useInteractionStore();
 
   useGSAP(
     () => {
@@ -91,6 +93,8 @@ const SidebarPhotos: React.FC<SidebarPhotosProps> = ({ object }) => {
         {photoObjects.map((photo, index) => (
           <button
             key={index}
+            onMouseEnter={() => setHoveredObject(photo.name)}
+            onMouseLeave={() => setHoveredObject(null)}
             className="photo-btn w-full rounded-lg bg-blue-600 py-3 font-medium text-white shadow-md transition-transform duration-200 hover:scale-[1.02] hover:bg-blue-700"
           >
             <a

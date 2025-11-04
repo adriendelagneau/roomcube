@@ -1,9 +1,11 @@
 "use client";
 
-import { useGLTF } from "@react-three/drei";
+import { Outlines, useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { useMemo, useRef } from "react";
 import * as THREE from "three";
+
+import useInteractionStore from "@/store/useInteractionStore";
 
 type GLTFResult = {
   nodes: { [name: string]: THREE.Mesh };
@@ -12,6 +14,8 @@ type GLTFResult = {
 
 const Room_1_4: React.FC<React.ComponentProps<"group">> = (props) => {
   const { nodes } = useGLTF("/models/room-1-4.glb") as unknown as GLTFResult;
+
+  const hoveredObjectName = useInteractionStore((state) => state.hoveredObject);
 
   // 🧱 Baked texture
   const bakedTexture = useMemo(() => {
@@ -131,6 +135,9 @@ const Room_1_4: React.FC<React.ComponentProps<"group">> = (props) => {
             position={node.position}
             rotation={node.rotation}
           >
+            {hoveredObjectName === name && (
+              <Outlines thickness={5} color="hotpink" />
+            )}
             <meshBasicMaterial map={bakedTexture} />
           </mesh>
         );

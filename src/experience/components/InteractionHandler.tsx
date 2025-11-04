@@ -27,6 +27,11 @@ const InteractionHandler = () => {
 
   // Hover detection every frame
   useFrame(() => {
+    const isUIHovered = useInteractionStore.getState().isUIHovered;
+    if (isUIHovered) {
+      document.body.style.cursor = "auto";
+      return;
+    }
     raycaster.current.setFromCamera(pointer.current, camera);
     const intersects = raycaster.current.intersectObjects(scene.children, true);
     const hit = intersects.find((i) =>

@@ -6,12 +6,14 @@ interface InteractionState {
   isEntered: boolean;
   hasEntered: boolean;
   hasIntroFinished: boolean;
+  isUIHovered: boolean;
 
   setHoveredObject: (name: string | null) => void;
   setClickedObject: (name: string | null) => void;
   setIsEntered: (entered: boolean) => void;
   setHasEntered: (entered: boolean) => void;
   setHasIntroFinished: (finished: boolean) => void;
+  setIsUIHovered: (hovered: boolean) => void;
 }
 
 const useInteractionStore = create<InteractionState>((set, get) => ({
@@ -20,9 +22,11 @@ const useInteractionStore = create<InteractionState>((set, get) => ({
   isEntered: false,
   hasEntered: false,
   hasIntroFinished: false,
+  isUIHovered: false,
 
   setHoveredObject: (name) => {
     if (get().hoveredObject === name) return;
+    console.log(name);
     set({ hoveredObject: name });
   },
 
@@ -44,6 +48,9 @@ const useInteractionStore = create<InteractionState>((set, get) => ({
   setHasIntroFinished: (finished) => {
     if (get().hasIntroFinished === finished) return;
     set({ hasIntroFinished: finished });
+  },
+  setIsUIHovered: (hovered) => {
+    set({ isUIHovered: hovered });
   },
 }));
 

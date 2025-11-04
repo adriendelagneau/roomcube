@@ -60,8 +60,8 @@ const Experience = () => {
       <Scene pointer={pointer} />
       <CameraManager camera={cameraRef} />
       <InteractionHandler />
-      {/* <EffectComposer>
-        <Bloom
+      <EffectComposer>
+        {/* <Bloom
           intensity={0.4} // The bloom intensity.
           blurPass={undefined} // A blur pass.
           kernelSize={KernelSize.LARGE} // blur kernel size
@@ -70,9 +70,9 @@ const Experience = () => {
           mipmapBlur={false} // Enables or disables mipmap blur.
           resolutionX={Resolution.AUTO_SIZE} // The horizontal resolution.
           resolutionY={Resolution.AUTO_SIZE} // The vertical resolution.
-        />
+        /> */}
         <ToneMapping blendFunction={BlendFunction.COLOR_DODGE} />
-      </EffectComposer> */}
+      </EffectComposer>
     </Canvas>
   );
 };
