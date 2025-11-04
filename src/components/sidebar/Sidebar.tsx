@@ -46,16 +46,16 @@ const Sidebar: React.FC = () => {
     >
       {activeObject && (
         <div ref={containerRef} className="relative flex h-full flex-col">
-          {activeObject.special === "monkey" && (
+          {activeObject.name === "Monkey" && (
             <SidebarMonkey object={activeObject} />
           )}
-          {activeObject.special === "Library" && (
+          {activeObject.name === "Library" && (
             <SidebarLibrary object={activeObject} />
           )}
-          {activeObject.special === "photos" && (
+          {activeObject.name === "Photos" && (
             <SidebarPhotos object={activeObject} />
           )}
-          {activeObject.special === "mug" && (
+          {activeObject.name === "Mug" && (
             <SidebarContact object={activeObject} />
           )}
           {activeObject.name === "Clock" && (
