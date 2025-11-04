@@ -8,6 +8,7 @@ import {
   ToneMapping,
 } from "@react-three/postprocessing";
 // import { KernelSize, Resolution, ToneMappingMode } from "postprocessing";
+import { BlendFunction } from "postprocessing";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
@@ -33,8 +34,12 @@ const Experience = () => {
 
   return (
     <Canvas
+      gl={{
+        antialias: true,
+        // toneMapping: THREE.ACESFilmicToneMapping,
+        alpha: true,
+      }}
       flat
-      gl={{ antialias: false, alpha: true }}
       style={{
         position: "fixed",
         top: 0,
@@ -55,8 +60,8 @@ const Experience = () => {
       <Scene pointer={pointer} />
       <CameraManager camera={cameraRef} />
       <InteractionHandler />
-      <EffectComposer>
-        {/* <Bloom
+      {/* <EffectComposer>
+        <Bloom
           intensity={0.4} // The bloom intensity.
           blurPass={undefined} // A blur pass.
           kernelSize={KernelSize.LARGE} // blur kernel size
@@ -65,9 +70,9 @@ const Experience = () => {
           mipmapBlur={false} // Enables or disables mipmap blur.
           resolutionX={Resolution.AUTO_SIZE} // The horizontal resolution.
           resolutionY={Resolution.AUTO_SIZE} // The vertical resolution.
-        /> */}
-        <ToneMapping />
-      </EffectComposer>
+        />
+        <ToneMapping blendFunction={BlendFunction.COLOR_DODGE} />
+      </EffectComposer> */}
     </Canvas>
   );
 };

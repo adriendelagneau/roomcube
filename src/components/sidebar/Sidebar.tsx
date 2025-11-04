@@ -37,6 +37,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <div
+      onClick={(e) => e.stopPropagation()}
       className={`fixed top-0 right-0 z-50 box-border h-full w-52 transform bg-neutral-900 p-3 text-blue-50 transition-transform duration-700 ease-in-out lg:w-80 lg:p-4 ${
         clickedObject ? "translate-x-0" : "translate-x-full"
       }`}
@@ -56,7 +57,7 @@ const Sidebar: React.FC = () => {
             <SidebarContact object={activeObject} />
           )}
           {activeObject.name === "Clock" && (
-            <div className="flex-grow overflow-hidden">
+            <div className="grow overflow-hidden">
               <SidebarClock object={activeObject} />
             </div>
           )}
