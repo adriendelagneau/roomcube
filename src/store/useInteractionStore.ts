@@ -26,12 +26,12 @@ const useInteractionStore = create<InteractionState>((set, get) => ({
 
   setHoveredObject: (name) => {
     if (get().hoveredObject === name) return;
-    console.log(name);
     set({ hoveredObject: name });
   },
 
   setClickedObject: (name) => {
     if (get().clickedObject === name) return; // ✅ prevents re-click camera twitch
+    console.log(name);
     set({ clickedObject: name });
   },
 

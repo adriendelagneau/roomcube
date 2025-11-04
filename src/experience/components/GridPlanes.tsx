@@ -17,7 +17,7 @@ const Plane: React.FC<PlaneProps> = ({ position, planeDepth, planeWidth }) => {
 
   const material = useMemo(() => {
     return new THREE.MeshStandardMaterial({
-      color: "##e8f2ff", // light bluish-white
+      color: "#cceeff", // light bluish-white
       emissive: "#66c2ff", // subtle glowing blue
       emissiveIntensity: 0.78,
       transparent: true,

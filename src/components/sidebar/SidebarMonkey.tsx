@@ -45,8 +45,7 @@ const SidebarMonkey: React.FC<SidebarMonkeyProps> = ({ object }) => {
         {
           opacity: 1,
           y: 0,
-          duration: 0.6,
-          stagger: 0.03,
+          stagger: 0.04,
           ease: "power3.out",
         },
         "-=0.2"
@@ -55,10 +54,10 @@ const SidebarMonkey: React.FC<SidebarMonkeyProps> = ({ object }) => {
       // 👇 Animate buttons AFTER text reveal
       tl.fromTo(
         buttons,
-        { opacity: 0, y: 10 },
+        { opacity: 0 },
         {
           opacity: 1,
-          y: 0,
+
           duration: 0.4,
           stagger: 0.15,
           ease: "power3.out",

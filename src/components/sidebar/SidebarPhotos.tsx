@@ -45,8 +45,7 @@ const SidebarPhotos: React.FC<SidebarPhotosProps> = ({ object }) => {
           {
             opacity: 1,
             y: 0,
-            duration: 0.6,
-            stagger: 0.03,
+            stagger: 0.04,
             ease: "power3.out",
           },
           "-=0.2"
@@ -56,12 +55,11 @@ const SidebarPhotos: React.FC<SidebarPhotosProps> = ({ object }) => {
       // Button animation
       tl.fromTo(
         buttons,
-        { opacity: 0, y: 10 },
+        { opacity: 0 },
         {
           opacity: 1,
-          y: 0,
           duration: 0.4,
-          stagger: 0.15,
+          stagger: 0.3,
           ease: "power3.out",
         },
         "+=0.2"

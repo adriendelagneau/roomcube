@@ -169,6 +169,7 @@ export const interactiveObjects: InteractiveObject[] = [
         type: "techList",
         items: [
           { icon: "/icons/mongodb.svg", name: "MongoDB" },
+          { icon: "/icons/express.svg", name: "Express" },
           { icon: "/icons/react.svg", name: "React" },
           { icon: "/icons/nodejs.svg", name: "Node.js" },
         ],
@@ -177,15 +178,16 @@ export const interactiveObjects: InteractiveObject[] = [
       {
         type: "text",
         content:
-          "Aujourd’hui, je travaille principalement avec Next.js, Tailwind CSS, shadcn/ui, GSAP et Three.js — un écosystème moderne que j’utilise pour concevoir des interfaces dynamiques, fluides et immersives.",
+          "Aujourd’hui, je travaille principalement avec un écosystème moderne que j’utilise pour concevoir des interfaces dynamiques, fluides et immersives.",
       },
       {
         type: "techList",
         items: [
           { icon: "/icons/nextjs.svg", name: "Nextjs" },
+          { icon: "/icons/typescript.svg", name: "Typescript" },
           { icon: "/icons/tailwind.svg", name: "Tailwind" },
+          { icon: "/icons/shadcn.svg", name: "Shadcn/ui" },
           { icon: "/icons/gsap.svg", name: "Gsap" },
-          { icon: "/icons/github.svg", name: "Github" },
         ],
       },
 

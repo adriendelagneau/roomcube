@@ -40,8 +40,7 @@ const SidebarClock: React.FC<SidebarClockProps> = ({ object }) => {
         { opacity: 0 },
         {
           opacity: 1,
-          duration: 0.6,
-          stagger: 0.03,
+          stagger: 0.04,
           ease: "power3.out",
         },
         "-=0.1"

@@ -34,9 +34,10 @@ const SidebarLibrary: React.FC<SidebarLibraryProps> = ({ object }) => {
         ease: "power3.out",
       });
 
-      // 🧱 Animate each block
+      // Animate each block
       blocks.forEach((block, i) => {
         const letters = block.querySelectorAll<HTMLElement>(".inner-span");
+        const icons = block.querySelectorAll<HTMLElement>(".tech-item");
 
         // Fade + slide in the whole block
         tl.fromTo(
@@ -51,7 +52,7 @@ const SidebarLibrary: React.FC<SidebarLibraryProps> = ({ object }) => {
           i === 0 ? "-=0.1" : "+=0.2"
         );
 
-        // Animate text letters *inside* text blocks
+        // Animate text letters
         if (letters.length) {
           tl.fromTo(
             letters,
@@ -67,18 +68,16 @@ const SidebarLibrary: React.FC<SidebarLibraryProps> = ({ object }) => {
           );
         }
 
-        // Animate tech icons if present
-        const icons = block.querySelectorAll<HTMLElement>(".tech-item");
+        // Animate tech icons with opacity only
         if (icons.length) {
           tl.fromTo(
             icons,
-            { opacity: 0, scale: 0.8 },
+            { opacity: 0 },
             {
               opacity: 1,
-              scale: 1,
               duration: 0.4,
-              stagger: 0.05,
-              ease: "back.out(1.7)",
+              stagger: 0.15,
+              ease: "power3.out",
             },
             "-=0.2"
           );
@@ -91,7 +90,7 @@ const SidebarLibrary: React.FC<SidebarLibraryProps> = ({ object }) => {
   return (
     <div
       ref={containerRef}
-      className="scrollbar-thin scrollbar-thumb-blue-500/40 scrollbar-track-transparent mt-4 flex h-full flex-col gap-6 overflow-y-auto pr-2"
+      className="scrollbar scrollbar-none mt-4 flex h-full flex-col gap-4 overflow-hidden"
     >
       {/* Title */}
       <h2 className="sidebar-title inline-block text-xl font-semibold lg:text-2xl">
@@ -110,7 +109,7 @@ const SidebarLibrary: React.FC<SidebarLibraryProps> = ({ object }) => {
           return (
             <p
               key={i}
-              className="content-block text-base leading-relaxed opacity-0"
+              className="content-block text-md leading-relaxed opacity-0 xl:text-base"
             >
               {textSplitter(block.content)}
             </p>
@@ -121,14 +120,14 @@ const SidebarLibrary: React.FC<SidebarLibraryProps> = ({ object }) => {
           return (
             <div
               key={i}
-              className="content-block grid grid-cols-3 gap-4 pt-2 opacity-0 sm:grid-cols-4"
+              className="content-block flex flex-wrap gap-3 opacity-0"
             >
               {block.items.map((item, idx) => (
                 <div
                   key={idx}
-                  className="tech-item flex flex-col items-center gap-1 text-center transition-transform duration-200 hover:scale-105"
+                  className="tech-item flex flex-col items-center text-center"
                 >
-                  <div className="relative h-10 w-10">
+                  <div className="relative h-8 w-8">
                     <Image
                       src={item.icon}
                       alt={item.name}
