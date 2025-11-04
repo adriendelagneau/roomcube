@@ -15,69 +15,40 @@ const SidebarClock: React.FC<SidebarClockProps> = ({ object }) => {
   const textRef = useRef<HTMLDivElement>(null);
   const underlineRef = useRef<HTMLSpanElement>(null);
 
-  useGSAP(() => {
-    if (!containerRef.current || !textRef.current || !underlineRef.current)
-      return;
+  // Animate title → text
+  useGSAP(
+    () => {
+      if (!containerRef.current || !underlineRef.current) return;
 
-    const container = containerRef.current;
-    const underlineEl = underlineRef.current;
-    const letters =
-      textRef.current.querySelectorAll<HTMLElement>(".inner-span");
+      const underlineEl = underlineRef.current;
+      const textSpans =
+        containerRef.current.querySelectorAll<HTMLElement>(".inner-span");
 
-    const lineHeight = parseFloat(
-      getComputedStyle(textRef.current).lineHeight || "8"
-    );
+      const tl = gsap.timeline({ delay: 0.5 });
 
-    // 1️⃣ Underline animation
-    gsap.set(underlineEl, { transformOrigin: "left center", scaleX: 0 });
-    gsap.to(underlineEl, {
-      scaleX: 1,
-      duration: 0.8,
-      ease: "power3.out",
-      delay: 0.3,
-    });
+      // Animate underline (width reveal matching text)
+      gsap.set(underlineEl, { transformOrigin: "left center", scaleX: 0 });
+      tl.to(underlineEl, {
+        scaleX: 1,
+        duration: 0.8,
+        ease: "power3.out",
+      });
 
-    // 2️⃣ Hide all letters first
-    gsap.set(letters, { opacity: 0 });
-
-    // 3️⃣ Reveal letters one by one
-    const tl = gsap.timeline({
-      delay: 0.6,
-      onComplete: () => {
-        container.style.overflowY = "auto";
-        gsap.to(container, {
-          scrollTop: container.scrollHeight,
-          duration: 0.3,
-          ease: "power2.out",
-        });
-      },
-    });
-
-    letters.forEach((letter, i) => {
-      tl.add(() => {
-        gsap.fromTo(
-          letter,
-          { opacity: 0, y: 6 },
-          { opacity: 1, y: 0, duration: 0.04, ease: "power2.out" }
-        );
-
-        const rect = letter.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-        const distanceFromBottom = containerRect.bottom - rect.bottom;
-
-        // 4️⃣ When near the bottom, scroll up one line height
-        if (distanceFromBottom < lineHeight * 2) {
-          gsap.to(container, {
-            scrollTop: `+=${lineHeight}`,
-            duration: 0.25,
-            ease: "power2.out",
-          });
-        }
-      }, i * 0.04); // adjust speed here
-    });
-
-    return () => tl.kill();
-  }, [object]);
+      // Animate text (letters)
+      tl.fromTo(
+        textSpans,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.6,
+          stagger: 0.03,
+          ease: "power3.out",
+        },
+        "-=0.1"
+      );
+    },
+    { scope: containerRef, dependencies: [object] }
+  );
 
   return (
     <div

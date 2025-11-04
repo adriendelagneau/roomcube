@@ -15,7 +15,6 @@ const SidebarContact: React.FC<SidebarContactProps> = ({ object }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const underlineRef = useRef<HTMLSpanElement>(null);
 
-  // Animate title → text
   useGSAP(
     () => {
       if (!containerRef.current || !underlineRef.current) return;
@@ -23,10 +22,13 @@ const SidebarContact: React.FC<SidebarContactProps> = ({ object }) => {
       const underlineEl = underlineRef.current;
       const textSpans =
         containerRef.current.querySelectorAll<HTMLElement>(".inner-span");
+      const button = containerRef.current.querySelector<HTMLElement>(
+        "button.download-btn"
+      );
 
       const tl = gsap.timeline({ delay: 0.5 });
 
-      // Animate underline (width reveal matching text)
+      // Animate underline
       gsap.set(underlineEl, { transformOrigin: "left center", scaleX: 0 });
       tl.to(underlineEl, {
         scaleX: 1,
@@ -34,18 +36,34 @@ const SidebarContact: React.FC<SidebarContactProps> = ({ object }) => {
         ease: "power3.out",
       });
 
-      // Animate text (letters)
+      // Animate text
       tl.fromTo(
         textSpans,
-        { opacity: 0 },
+        { opacity: 0, y: 5 },
         {
           opacity: 1,
+          y: 0,
           duration: 0.6,
           stagger: 0.03,
           ease: "power3.out",
         },
-        "-=0.1"
+        "-=0.2"
       );
+
+      // Animate download button
+      if (button) {
+        tl.fromTo(
+          button,
+          { opacity: 0, y: 10 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power3.out",
+          },
+          "+=0.2"
+        );
+      }
     },
     { scope: containerRef, dependencies: [object] }
   );
@@ -67,6 +85,17 @@ const SidebarContact: React.FC<SidebarContactProps> = ({ object }) => {
       <p className="text-lg leading-relaxed opacity-90">
         {textSplitter(object.text ?? "A cup of coffee keeps the code flowing!")}
       </p>
+
+      {/* Download button */}
+      <button className="download-btn w-full rounded-lg bg-blue-600 py-3 font-medium text-white shadow-md transition-transform duration-200 hover:scale-[1.02] hover:bg-blue-700">
+        <a
+          href="/pdf/resume.pdf" // 👈 put your file in /public/CV.pdf
+          download
+          className="block w-full text-center"
+        >
+          Download CV
+        </a>
+      </button>
     </div>
   );
 };

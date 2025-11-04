@@ -81,7 +81,7 @@ export const interactiveObjects: InteractiveObject[] = [
       zoom: 162,
     },
     title: "Clock :",
-    text: "Parce qu’en code comme dans la vie, tout est une question de timing, Iure nemo sit ab, saepe voluptatum, possimus porro asperiores error eaque molestias nisi quae magnam enim eligendi nihil quod minus mollitia aliquid! Tempore exercitationem dolor quidem doloribus temporibus illum iste! Eius, accusamus. Numquam, soluta? Quibusdam magni officia accusantium sunt impedit repellendus, modi distinctio nisi sint deserunt earum mollitia non dignissimos, architecto corporis ratione odit! Excepturi, quas voluptatem. Dolorem, explicabo iure. Minus quod, eaque asperiores obcaecati aspernatur laudantium a deleniti. Cupiditate nisi alias cumque? Mollitia modi totam quis rem optio in possimus. A ipsa, est ea fugiat porro, facere consequuntur tenetur excepturi deleniti quasi, sequi dolores laudantium esse beatae minus nihil itaque quod! Laboriosam obcaecati, nulla ducimus eveniet voluptatem magni repellendus, provident dicta dolore aperiam architecto qui, quasi dolorum ipsa.",
+    text: "Parce qu’en code comme dans la vie, tout est une question de timing.",
   },
   {
     name: "Monkey",

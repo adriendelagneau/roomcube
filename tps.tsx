@@ -1,144 +1,111 @@
-import { useFrame } from "@react-three/fiber";
+"use client";
+import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import React, { useMemo, useRef, useEffect, useState } from "react";
-import * as THREE from "three";
+import React, { useRef } from "react";
 
-interface PlaneProps {
-  position: [number, number, number];
-  planeDepth: number;
-  planeWidth: number;
+import { InteractiveObject } from "@/data/interactiveObjects";
+import { textSplitter } from "@/utils/textSplitter";
+
+interface SidebarClockProps {
+  object: InteractiveObject;
 }
 
-// Single plane component
-const Plane: React.FC<PlaneProps> = ({ position, planeDepth, planeWidth }) => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const opacityRef = useRef<number>(0);
-  const [hovered, setHovered] = useState(false);
+const SidebarClock: React.FC<SidebarClockProps> = ({ object }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const underlineRef = useRef<HTMLSpanElement>(null);
 
-  const material = useMemo(() => {
-    return new THREE.MeshStandardMaterial({
-      color: "#e6f7ff", // light bluish-white
-      emissive: "#33bbff", // bright blue for bloom
-      emissiveIntensity: 0.8,
-      transparent: true,
-      opacity: 0,
-      polygonOffset: true,
-      polygonOffsetFactor: 1,
-      polygonOffsetUnits: 1,
-    });
-  }, []);
+  useGSAP(() => {
+    if (!containerRef.current || !textRef.current || !underlineRef.current)
+      return;
 
-  useEffect(() => {
-    if (!meshRef.current) return;
-    const material = meshRef.current.material as THREE.MeshStandardMaterial;
+    const container = containerRef.current;
+    const underlineEl = underlineRef.current;
+    const letters =
+      textRef.current.querySelectorAll<HTMLElement>(".inner-span");
 
-    // Animate emissive color on hover
-    const targetEmissive = hovered ? "#88ddff" : "#33bbff";
-    const targetColor = new THREE.Color(targetEmissive);
-
-    gsap.to(material.emissive, {
-      r: targetColor.r,
-      g: targetColor.g,
-      b: targetColor.b,
-      duration: 0.2,
-    });
-  }, [hovered]);
-
-  useFrame(() => {
-    if (!meshRef.current) return;
-    const material = meshRef.current.material as THREE.MeshStandardMaterial;
-
-    const targetOpacity = hovered ? 1.0 : 0.3;
-    const lerpFactor = hovered ? 0.3 : 0.1;
-
-    opacityRef.current = THREE.MathUtils.lerp(
-      opacityRef.current,
-      targetOpacity,
-      lerpFactor
+    const lineHeight = parseFloat(
+      getComputedStyle(textRef.current).lineHeight || "8"
     );
-    material.opacity = opacityRef.current;
 
-    // Slightly pulse emissive intensity when hovered
-    // material.emissiveIntensity = hovered
-    //   ? 1.5 + Math.sin(performance.now() * 0.005) * 0.3
-    //   : 0.8;
-  });
+    // 1️⃣ Underline animation
+    gsap.set(underlineEl, { transformOrigin: "left center", scaleX: 0 });
+    gsap.to(underlineEl, {
+      scaleX: 1,
+      duration: 0.8,
+      ease: "power3.out",
+      delay: 0.3,
+    });
+
+    // 2️⃣ Hide all letters first
+    gsap.set(letters, { opacity: 0 });
+
+    // 3️⃣ Reveal letters one by one
+    const tl = gsap.timeline({
+      delay: 0.6,
+      onComplete: () => {
+        container.style.overflowY = "auto";
+        gsap.to(container, {
+          scrollTop: container.scrollHeight,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      },
+    });
+
+    letters.forEach((letter, i) => {
+      tl.add(() => {
+        gsap.fromTo(
+          letter,
+          { opacity: 0, y: 6 },
+          { opacity: 1, y: 0, duration: 0.04, ease: "power2.out" }
+        );
+
+        const rect = letter.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        const distanceFromBottom = containerRect.bottom - rect.bottom;
+
+        // 4️⃣ When near the bottom, scroll up one line height
+        if (distanceFromBottom < lineHeight * 2) {
+          gsap.to(container, {
+            scrollTop: `+=${lineHeight}`,
+            duration: 0.25,
+            ease: "power2.out",
+          });
+        }
+      }, i * 0.04); // adjust speed here
+    });
+
+    return () => tl.kill();
+  }, [object]);
 
   return (
-    <mesh
-      ref={meshRef}
-      position={position}
-      rotation={[-Math.PI / 2, 0, Math.PI / 4]}
-      material={material}
-      onPointerMove={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
+    <div
+      ref={containerRef}
+      className="scrollbar scrollbar-none mt-4 h-full overflow-hidden"
     >
-      <planeGeometry args={[planeDepth, planeWidth]} />
-    </mesh>
+      {/* Title */}
+      <h2 className="sidebar-title mb-2 inline-block text-xl font-semibold lg:text-2xl">
+        <span className="relative inline-block">
+          {object.title}
+          <span
+            ref={underlineRef}
+            className="underline-span block h-px origin-left scale-x-0 bg-blue-50"
+          />
+        </span>
+      </h2>
+
+      {/* Scrollable text area */}
+      {object.text && (
+        <div
+          ref={textRef}
+          className="scroll-area relative pr-1 pb-8 text-xl leading-8 opacity-90"
+        >
+          {textSplitter(object.text)}
+        </div>
+      )}
+    </div>
   );
 };
 
-interface GridPlanesProps {
-  position: [number, number, number];
-  rows: number;
-  columns: number;
-  planeWidth: number;
-  planeDepth: number;
-}
-
-// GridPlanes component
-const GridPlanes = React.forwardRef<THREE.Group, GridPlanesProps>(
-  ({ position, rows, columns, planeWidth, planeDepth }, ref) => {
-    const rotatedStep = Math.sqrt(planeWidth ** 2 + planeDepth ** 2);
-    const startX = -((columns - 1) * rotatedStep) / 2;
-    const startZ = -((rows - 1) * rotatedStep) / 2;
-    const planes = [];
-
-    // Main grid
-    for (let row = 0; row < rows; row++) {
-      for (let column = 0; column < columns; column++) {
-        const x = startX + column * rotatedStep;
-        const z = startZ + row * rotatedStep;
-
-        planes.push(
-          <Plane
-            key={`plane-${row}-${column}`}
-            planeDepth={planeDepth}
-            planeWidth={planeWidth}
-            position={[x, 0, z]}
-          />
-        );
-      }
-    }
-
-    // Offset grid for diagonal overlay
-    const offsetX = rotatedStep / 2;
-    const offsetZ = rotatedStep / 2;
-
-    for (let row = 0; row < rows - 1; row++) {
-      for (let column = 0; column < columns - 1; column++) {
-        const x = startX + column * rotatedStep + offsetX;
-        const z = startZ + row * rotatedStep + offsetZ;
-
-        planes.push(
-          <Plane
-            key={`plane-offset-${row}-${column}`}
-            planeDepth={planeDepth}
-            planeWidth={planeWidth}
-            position={[x, 0, z]}
-          />
-        );
-      }
-    }
-
-    return (
-      <group position={position} ref={ref}>
-        {planes}
-      </group>
-    );
-  }
-);
-
-GridPlanes.displayName = "GridPlanes";
-
-export default GridPlanes;
+export default SidebarClock;
